@@ -10,7 +10,7 @@ from copy import deepcopy
 
 from util import AverageMeter, TwoAugUnsupervisedDataset
 from encoder import SmallAlexNet
-from align_uniform import align_loss, uniform_loss
+from align_uniform import koza_leon, align_loss
 from linear_eval import train_linear
 
 def parse_option():
@@ -142,7 +142,7 @@ def main():
     lin_train_loader, lin_val_loader = lin_get_data_loaders(opt)
 
     align_meter = AverageMeter('align_loss')
-    unif_meter = AverageMeter('uniform_loss')
+    unif_meter = AverageMeter('kl_ent_loss')
     loss_meter = AverageMeter('total_loss')
     it_time_meter = AverageMeter('iter_time')
 
@@ -153,11 +153,11 @@ def main():
         loss_meter.reset()
         it_time_meter.reset()
         t0 = time.time()
-        for ii, (im_x, im_y) in enumerate(loader):
+        for ii, (im_clean, im_aug1, im_aug2) in enumerate(loader):
             optim.zero_grad()
-            x, y = encoder(torch.cat([im_x.to(opt.gpus[0]), im_y.to(opt.gpus[0])])).chunk(2)
-            align_loss_val = align_loss(x, y, alpha=opt.align_alpha)
-            unif_loss_val = (uniform_loss(x, t=opt.unif_t) + uniform_loss(y, t=opt.unif_t)) / 2
+            clean, aug_1, aug_2 = encoder(torch.cat([im_clean.to(opt.gpus[0]), im_aug1.to(opt.gpus[0]), im_aug2.to(opt.gpus[0])])).chunk(3)
+            align_loss_val = align_loss(aug_1, aug_2, alpha=opt.align_alpha)
+            unif_loss_val = koza_leon(clean)
             loss = align_loss_val * dual_var + unif_loss_val
             align_meter.update(align_loss_val, x.shape[0])
             unif_meter.update(unif_loss_val)

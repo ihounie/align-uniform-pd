@@ -50,3 +50,17 @@ class TwoAugUnsupervisedDataset(torch.utils.data.Dataset):
 
     def __len__(self):
         return len(self.dataset)
+
+class CleanTwoAugUnsupervisedDataset(torch.utils.data.Dataset):
+    r"""Returns two augmentation and no labels."""
+    def __init__(self, dataset, transform, transform_clean):
+        self.dataset = dataset
+        self.transform = transform
+        self.transform_clean = transform_clean
+
+    def __getitem__(self, index):
+        image, _ = self.dataset[index]
+        return self.transform_clean(image), self.transform(image), self.transform(image)
+
+    def __len__(self):
+        return len(self.dataset)
