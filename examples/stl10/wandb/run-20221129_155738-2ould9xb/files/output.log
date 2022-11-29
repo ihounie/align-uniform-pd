@@ -1,0 +1,231 @@
+
+Optimize: 0.98 * loss_align(alpha=2) + 0.96 * loss_uniform(t=2)
+Files already downloaded and verified
+Files already downloaded and verified
+Epoch 0/200	It 0/137	align_loss 1.303152 (1.303152)	uniform_loss -2.820087 (-2.820087)	total_loss -1.489786 (-1.489786)	iter_time 9.157287 (9.157287)
+dual var 0.6746748869617779, slack -0.34615844637155535
+Feature dimension: 4096
+Epoch 0/100	It 0/40	loss 2.297944 (2.297944)	iter_time 0.456181 (0.456181)
+Epoch 0/100	val_acc 28.32%
+Epoch 1/100	It 0/40	loss 2.177009 (2.177009)	iter_time 0.322189 (0.322189)
+Epoch 1/100	val_acc 27.14%
+Epoch 2/100	It 0/40	loss 2.134911 (2.134911)	iter_time 0.318173 (0.318173)
+Epoch 2/100	val_acc 28.19%
+Epoch 3/100	It 0/40	loss 1.991078 (1.991078)	iter_time 0.317756 (0.317756)
+Epoch 3/100	val_acc 28.74%
+Epoch 4/100	It 0/40	loss 2.052964 (2.052964)	iter_time 0.332498 (0.332498)
+Epoch 4/100	val_acc 33.39%
+Epoch 5/100	It 0/40	loss 2.045729 (2.045729)	iter_time 0.326599 (0.326599)
+Epoch 5/100	val_acc 34.94%
+Epoch 6/100	It 0/40	loss 2.023689 (2.023689)	iter_time 0.321415 (0.321415)
+Epoch 6/100	val_acc 28.6%
+Epoch 7/100	It 0/40	loss 2.149087 (2.149087)	iter_time 0.314563 (0.314563)
+Epoch 7/100	val_acc 30.93%
+Epoch 8/100	It 0/40	loss 2.065028 (2.065028)	iter_time 0.332923 (0.332923)
+Epoch 8/100	val_acc 34.7%
+Epoch 9/100	It 0/40	loss 1.943540 (1.943540)	iter_time 0.331331 (0.331331)
+Epoch 9/100	val_acc 35.75%
+Epoch 10/100	It 0/40	loss 1.972379 (1.972379)	iter_time 0.332271 (0.332271)
+Epoch 10/100	val_acc 31.54%
+Epoch 11/100	It 0/40	loss 2.009249 (2.009249)	iter_time 0.327085 (0.327085)
+Epoch 11/100	val_acc 37.72%
+Epoch 12/100	It 0/40	loss 1.888969 (1.888969)	iter_time 0.317096 (0.317096)
+Epoch 12/100	val_acc 35.84%
+Epoch 13/100	It 0/40	loss 1.975022 (1.975022)	iter_time 0.315475 (0.315475)
+Epoch 13/100	val_acc 34.62%
+Epoch 14/100	It 0/40	loss 1.914650 (1.914650)	iter_time 0.314652 (0.314652)
+Epoch 14/100	val_acc 35.45%
+Epoch 15/100	It 0/40	loss 1.825574 (1.825574)	iter_time 0.312409 (0.312409)
+Epoch 15/100	val_acc 32.41%
+Epoch 16/100	It 0/40	loss 1.924109 (1.924109)	iter_time 0.313226 (0.313226)
+Epoch 16/100	val_acc 35.34%
+Epoch 17/100	It 0/40	loss 1.913882 (1.913882)	iter_time 0.330164 (0.330164)
+Epoch 17/100	val_acc 36.25%
+Epoch 18/100	It 0/40	loss 2.045085 (2.045085)	iter_time 0.338424 (0.338424)
+Epoch 18/100	val_acc 37.79%
+Epoch 19/100	It 0/40	loss 1.910250 (1.910250)	iter_time 0.321785 (0.321785)
+Epoch 19/100	val_acc 38.64%
+Epoch 20/100	It 0/40	loss 1.841638 (1.841638)	iter_time 0.317535 (0.317535)
+Epoch 20/100	val_acc 39.46%
+Epoch 21/100	It 0/40	loss 1.816809 (1.816809)	iter_time 0.317614 (0.317614)
+Epoch 21/100	val_acc 39.6%
+Epoch 22/100	It 0/40	loss 1.885394 (1.885394)	iter_time 0.317307 (0.317307)
+Epoch 22/100	val_acc 37.75%
+Epoch 23/100	It 0/40	loss 1.847061 (1.847061)	iter_time 0.327895 (0.327895)
+Epoch 23/100	val_acc 38.86%
+Epoch 24/100	It 0/40	loss 1.830518 (1.830518)	iter_time 0.319443 (0.319443)
+Epoch 24/100	val_acc 38.8%
+Epoch 25/100	It 0/40	loss 1.976933 (1.976933)	iter_time 0.320461 (0.320461)
+Epoch 25/100	val_acc 34.35%
+Epoch 26/100	It 0/40	loss 1.833244 (1.833244)	iter_time 0.321009 (0.321009)
+Epoch 26/100	val_acc 36.9%
+Epoch 27/100	It 0/40	loss 1.897440 (1.897440)	iter_time 0.326184 (0.326184)
+Epoch 27/100	val_acc 38.82%
+Epoch 28/100	It 0/40	loss 1.955836 (1.955836)	iter_time 0.315931 (0.315931)
+Epoch 28/100	val_acc 36.71%
+Epoch 29/100	It 0/40	loss 1.832755 (1.832755)	iter_time 0.332326 (0.332326)
+Epoch 29/100	val_acc 37.99%
+Epoch 30/100	It 0/40	loss 1.995693 (1.995693)	iter_time 0.323618 (0.323618)
+Epoch 30/100	val_acc 40.8%
+Epoch 31/100	It 0/40	loss 1.835932 (1.835932)	iter_time 0.316412 (0.316412)
+Epoch 31/100	val_acc 39.59%
+Epoch 32/100	It 0/40	loss 1.743109 (1.743109)	iter_time 0.315354 (0.315354)
+Epoch 32/100	val_acc 38.06%
+Epoch 33/100	It 0/40	loss 1.821274 (1.821274)	iter_time 0.315705 (0.315705)
+Epoch 33/100	val_acc 41.51%
+Epoch 34/100	It 0/40	loss 1.753898 (1.753898)	iter_time 0.327755 (0.327755)
+Epoch 34/100	val_acc 40.5%
+Epoch 35/100	It 0/40	loss 1.692328 (1.692328)	iter_time 0.311154 (0.311154)
+Epoch 35/100	val_acc 39.85%
+Epoch 36/100	It 0/40	loss 1.850425 (1.850425)	iter_time 0.321351 (0.321351)
+Epoch 36/100	val_acc 38.21%
+Epoch 37/100	It 0/40	loss 1.879492 (1.879492)	iter_time 0.331846 (0.331846)
+Epoch 37/100	val_acc 35.88%
+Epoch 38/100	It 0/40	loss 1.900084 (1.900084)	iter_time 0.320874 (0.320874)
+Epoch 38/100	val_acc 38.52%
+Epoch 39/100	It 0/40	loss 1.809548 (1.809548)	iter_time 0.322339 (0.322339)
+Epoch 39/100	val_acc 40.66%
+Epoch 40/100	It 0/40	loss 1.848387 (1.848387)	iter_time 0.323728 (0.323728)
+Epoch 40/100	val_acc 38.12%
+Epoch 41/100	It 0/40	loss 1.847502 (1.847502)	iter_time 0.331666 (0.331666)
+Epoch 41/100	val_acc 41.1%
+Epoch 42/100	It 0/40	loss 1.768818 (1.768818)	iter_time 0.321421 (0.321421)
+Epoch 42/100	val_acc 41.89%
+Epoch 43/100	It 0/40	loss 1.842647 (1.842647)	iter_time 0.323554 (0.323554)
+Epoch 43/100	val_acc 41.45%
+Epoch 44/100	It 0/40	loss 1.750906 (1.750906)	iter_time 0.317958 (0.317958)
+Epoch 44/100	val_acc 39.7%
+Epoch 45/100	It 0/40	loss 1.814167 (1.814167)	iter_time 0.332766 (0.332766)
+Epoch 45/100	val_acc 39.73%
+Epoch 46/100	It 0/40	loss 1.800426 (1.800426)	iter_time 0.318413 (0.318413)
+Epoch 46/100	val_acc 39.29%
+Epoch 47/100	It 0/40	loss 1.866716 (1.866716)	iter_time 0.318748 (0.318748)
+Epoch 47/100	val_acc 39.39%
+Epoch 48/100	It 0/40	loss 1.778452 (1.778452)	iter_time 0.329638 (0.329638)
+Epoch 48/100	val_acc 43.01%
+Epoch 49/100	It 0/40	loss 1.890947 (1.890947)	iter_time 0.318281 (0.318281)
+Epoch 49/100	val_acc 42.75%
+Epoch 50/100	It 0/40	loss 1.685326 (1.685326)	iter_time 0.316386 (0.316386)
+Epoch 50/100	val_acc 41.45%
+Epoch 51/100	It 0/40	loss 1.845117 (1.845117)	iter_time 0.330299 (0.330299)
+Epoch 51/100	val_acc 42.8%
+Epoch 52/100	It 0/40	loss 1.804310 (1.804310)	iter_time 0.331297 (0.331297)
+Epoch 52/100	val_acc 40.2%
+Epoch 53/100	It 0/40	loss 1.774189 (1.774189)	iter_time 0.323522 (0.323522)
+Epoch 53/100	val_acc 40.11%
+Epoch 54/100	It 0/40	loss 1.888631 (1.888631)	iter_time 0.338008 (0.338008)
+Epoch 54/100	val_acc 42.09%
+Epoch 55/100	It 0/40	loss 1.822572 (1.822572)	iter_time 0.326402 (0.326402)
+Epoch 55/100	val_acc 42.83%
+Epoch 56/100	It 0/40	loss 1.787842 (1.787842)	iter_time 0.328949 (0.328949)
+Epoch 56/100	val_acc 40.64%
+Epoch 57/100	It 0/40	loss 1.834518 (1.834518)	iter_time 0.324857 (0.324857)
+Epoch 57/100	val_acc 41.94%
+Epoch 58/100	It 0/40	loss 1.864272 (1.864272)	iter_time 0.318220 (0.318220)
+Epoch 58/100	val_acc 41.26%
+Epoch 59/100	It 0/40	loss 1.714670 (1.714670)	iter_time 0.322071 (0.322071)
+Epoch 59/100	val_acc 41.76%
+Epoch 60/100	It 0/40	loss 1.904166 (1.904166)	iter_time 0.325341 (0.325341)
+Epoch 60/100	val_acc 42.44%
+Epoch 61/100	It 0/40	loss 1.910787 (1.910787)	iter_time 0.316255 (0.316255)
+Epoch 61/100	val_acc 42.35%
+Epoch 62/100	It 0/40	loss 1.807539 (1.807539)	iter_time 0.325451 (0.325451)
+Epoch 62/100	val_acc 35.55%
+Epoch 63/100	It 0/40	loss 1.848495 (1.848495)	iter_time 0.334341 (0.334341)
+Epoch 63/100	val_acc 37.28%
+Epoch 64/100	It 0/40	loss 1.876797 (1.876797)	iter_time 0.325685 (0.325685)
+Epoch 64/100	val_acc 36.74%
+Epoch 65/100	It 0/40	loss 1.975692 (1.975692)	iter_time 0.318846 (0.318846)
+Epoch 65/100	val_acc 41.98%
+Epoch 66/100	It 0/40	loss 1.726039 (1.726039)	iter_time 0.325498 (0.325498)
+Epoch 66/100	val_acc 40.23%
+Epoch 67/100	It 0/40	loss 1.679318 (1.679318)	iter_time 0.319349 (0.319349)
+Epoch 67/100	val_acc 41.74%
+Epoch 68/100	It 0/40	loss 1.713118 (1.713118)	iter_time 0.329256 (0.329256)
+Epoch 68/100	val_acc 40.24%
+Epoch 69/100	It 0/40	loss 1.837656 (1.837656)	iter_time 0.318402 (0.318402)
+Epoch 69/100	val_acc 42.73%
+Epoch 70/100	It 0/40	loss 1.660825 (1.660825)	iter_time 0.321980 (0.321980)
+Epoch 70/100	val_acc 42.01%
+Epoch 71/100	It 0/40	loss 1.815530 (1.815530)	iter_time 0.327802 (0.327802)
+Epoch 71/100	val_acc 39.65%
+Epoch 72/100	It 0/40	loss 1.844345 (1.844345)	iter_time 0.326508 (0.326508)
+Epoch 72/100	val_acc 42.29%
+Epoch 73/100	It 0/40	loss 1.690926 (1.690926)	iter_time 0.328740 (0.328740)
+Epoch 73/100	val_acc 42.18%
+Epoch 74/100	It 0/40	loss 1.791912 (1.791912)	iter_time 0.338373 (0.338373)
+Epoch 74/100	val_acc 39.85%
+Epoch 75/100	It 0/40	loss 1.774263 (1.774263)	iter_time 0.319827 (0.319827)
+Epoch 75/100	val_acc 42.26%
+Epoch 76/100	It 0/40	loss 1.680594 (1.680594)	iter_time 0.326313 (0.326313)
+Epoch 76/100	val_acc 41.95%
+Epoch 77/100	It 0/40	loss 1.857351 (1.857351)	iter_time 0.323808 (0.323808)
+Epoch 77/100	val_acc 43.54%
+Epoch 78/100	It 0/40	loss 1.722112 (1.722112)	iter_time 0.323261 (0.323261)
+Epoch 78/100	val_acc 42.55%
+Epoch 79/100	It 0/40	loss 1.753679 (1.753679)	iter_time 0.326925 (0.326925)
+Epoch 79/100	val_acc 43.45%
+Epoch 80/100	It 0/40	loss 1.804584 (1.804584)	iter_time 0.319454 (0.319454)
+Epoch 80/100	val_acc 44.25%
+Epoch 81/100	It 0/40	loss 1.804882 (1.804882)	iter_time 0.327048 (0.327048)
+Epoch 81/100	val_acc 41.94%
+Epoch 82/100	It 0/40	loss 1.804664 (1.804664)	iter_time 0.325940 (0.325940)
+Epoch 82/100	val_acc 43.96%
+Epoch 83/100	It 0/40	loss 1.748347 (1.748347)	iter_time 0.319192 (0.319192)
+Epoch 83/100	val_acc 40.39%
+Epoch 84/100	It 0/40	loss 1.762740 (1.762740)	iter_time 0.321681 (0.321681)
+Epoch 84/100	val_acc 44.38%
+Epoch 85/100	It 0/40	loss 1.734881 (1.734881)	iter_time 0.332999 (0.332999)
+Epoch 85/100	val_acc 43.41%
+Epoch 86/100	It 0/40	loss 1.667325 (1.667325)	iter_time 0.318795 (0.318795)
+Epoch 86/100	val_acc 41.84%
+Epoch 87/100	It 0/40	loss 1.626663 (1.626663)	iter_time 0.323926 (0.323926)
+Epoch 87/100	val_acc 42.21%
+Epoch 88/100	It 0/40	loss 1.680757 (1.680757)	iter_time 0.331239 (0.331239)
+Epoch 88/100	val_acc 39.4%
+Epoch 89/100	It 0/40	loss 1.742695 (1.742695)	iter_time 0.323553 (0.323553)
+Epoch 89/100	val_acc 40.31%
+Epoch 90/100	It 0/40	loss 1.894611 (1.894611)	iter_time 0.314190 (0.314190)
+Epoch 90/100	val_acc 44.67%
+Epoch 91/100	It 0/40	loss 1.651567 (1.651567)	iter_time 0.328382 (0.328382)
+Epoch 91/100	val_acc 40.64%
+Epoch 92/100	It 0/40	loss 1.691218 (1.691218)	iter_time 0.323498 (0.323498)
+Epoch 92/100	val_acc 43.01%
+Epoch 93/100	It 0/40	loss 1.645332 (1.645332)	iter_time 0.331965 (0.331965)
+Epoch 93/100	val_acc 39.7%
+Epoch 94/100	It 0/40	loss 1.833856 (1.833856)	iter_time 0.333837 (0.333837)
+Epoch 94/100	val_acc 44%
+Epoch 95/100	It 0/40	loss 1.727325 (1.727325)	iter_time 0.323853 (0.323853)
+Epoch 95/100	val_acc 42.58%
+Epoch 96/100	It 0/40	loss 1.860503 (1.860503)	iter_time 0.327882 (0.327882)
+Epoch 96/100	val_acc 43.06%
+Epoch 97/100	It 0/40	loss 1.735112 (1.735112)	iter_time 0.332121 (0.332121)
+Epoch 97/100	val_acc 41.93%
+Epoch 98/100	It 0/40	loss 1.743673 (1.743673)	iter_time 0.364868 (0.364868)
+Epoch 98/100	val_acc 43.82%
+Epoch 99/100	It 0/40	loss 1.674288 (1.674288)	iter_time 0.326826 (0.326826)
+Epoch 99/100	val_acc 44.05%
+val acc 0.4405, time: 188.8018982410431
+Epoch 1/200	It 0/137	align_loss 0.143781 (0.143781)	uniform_loss -0.338091 (-0.338091)	total_loss -0.241086 (-0.241086)	iter_time 2.420561 (2.420561)
+dual var 0.299095666160186, slack -0.3755792208015919
+Feature dimension: 4096
+Epoch 0/100	It 0/40	loss 2.312554 (2.312554)	iter_time 0.322725 (0.322725)
+Epoch 0/100	val_acc 18.86%
+Epoch 1/100	It 0/40	loss 2.342803 (2.342803)	iter_time 0.334209 (0.334209)
+Epoch 1/100	val_acc 28.43%
+Epoch 2/100	It 0/40	loss 2.153303 (2.153303)	iter_time 0.329491 (0.329491)
+Epoch 2/100	val_acc 23.09%
+Epoch 3/100	It 0/40	loss 2.209168 (2.209168)	iter_time 0.328550 (0.328550)
+Epoch 3/100	val_acc 24.38%
+Epoch 4/100	It 0/40	loss 2.180943 (2.180943)	iter_time 0.331670 (0.331670)
+Epoch 4/100	val_acc 27.52%
+Epoch 5/100	It 0/40	loss 2.227140 (2.227140)	iter_time 0.314983 (0.314983)
+Epoch 5/100	val_acc 25.39%
+Epoch 6/100	It 0/40	loss 2.142513 (2.142513)	iter_time 0.331573 (0.331573)
+Epoch 6/100	val_acc 27.8%
+Epoch 7/100	It 0/40	loss 1.984428 (1.984428)	iter_time 0.323513 (0.323513)
+Epoch 7/100	val_acc 35.24%
+Epoch 8/100	It 0/40	loss 1.973047 (1.973047)	iter_time 0.319102 (0.319102)
+Epoch 8/100	val_acc 30.7%
+Epoch 9/100	It 0/40	loss 2.214150 (2.214150)	iter_time 0.333385 (0.333385)
+Epoch 9/100	val_acc 29.78%

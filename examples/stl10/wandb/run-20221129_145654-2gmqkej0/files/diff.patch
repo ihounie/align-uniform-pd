@@ -1,0 +1,90 @@
+diff --git a/examples/stl10/main.py b/examples/stl10/main.py
+index 5ac272f..7d22323 100644
+--- a/examples/stl10/main.py
++++ b/examples/stl10/main.py
+@@ -9,13 +9,15 @@ import torch.nn as nn
+ from util import AverageMeter, TwoAugUnsupervisedDataset
+ from encoder import SmallAlexNet
+ from align_uniform import align_loss, uniform_loss
++import wandb
+ 
+ 
+ def parse_option():
+     parser = argparse.ArgumentParser('STL-10 Representation Learning with Alignment and Uniformity Losses')
+ 
+-    parser.add_argument('--align_w', type=float, default=1, help='Alignment loss weight')
+-    parser.add_argument('--unif_w', type=float, default=1, help='Uniformity loss weight')
++    parser.add_argument('--align_w', type=float, default=0.98, help='Alignment loss initial weight')
++    parser.add_argument('--unif_w', type=float, default=0.96, help='Uniformity loss initial weight')
++    parser.add_argument('--align_eps', type=float, default=0.4, help='Alignment Loss Epsilon')
+     parser.add_argument('--align_alpha', type=float, default=2, help='alpha in alignment loss')
+     parser.add_argument('--unif_t', type=float, default=2, help='t in uniformity loss')
+ 
+@@ -23,6 +25,7 @@ def parse_option():
+     parser.add_argument('--epochs', type=int, default=200, help='Number of training epochs')
+     parser.add_argument('--lr', type=float, default=None,
+                         help='Learning rate. Default is linear scaling 0.12 per 256 batch size')
++    parser.add_argument('--lr_dual', type=float, default=0.2, help='Dual Learning rate')
+     parser.add_argument('--lr_decay_rate', type=float, default=0.1, help='Learning rate decay rate')
+     parser.add_argument('--lr_decay_epochs', default=[155, 170, 185], nargs='*', type=int,
+                         help='When to decay learning rate')
+@@ -38,6 +41,9 @@ def parse_option():
+     parser.add_argument('--data_folder', type=str, default='./data', help='Path to data')
+     parser.add_argument('--result_folder', type=str, default='./results', help='Base directory to save model')
+ 
++    parser.add_argument('--wandb_log',  action='store_true')
++    parser.add_argument('--project',  default='Uniformity', type=str, help='wandb Project name')
++    parser.add_argument('--run',  default='PD', type=str, help='wandb Run name')
+     opt = parser.parse_args()
+ 
+     if opt.lr is None:
+@@ -50,6 +56,9 @@ def parse_option():
+         f"align{opt.align_w:g}alpha{opt.align_alpha:g}_unif{opt.unif_w:g}t{opt.unif_t:g}"
+     )
+     os.makedirs(opt.save_folder, exist_ok=True)
++    if opt.wandb_log:
++        wandb.init(project=opt.project, entity="hounie", name=opt.run)
++        wandb.config.update(opt)
+ 
+     return opt
+ 
+@@ -94,6 +103,8 @@ def main():
+     unif_meter = AverageMeter('uniform_loss')
+     loss_meter = AverageMeter('total_loss')
+     it_time_meter = AverageMeter('iter_time')
++
++    dual_var = opt.align_w/opt.unif_w
+     for epoch in range(opt.epochs):
+         align_meter.reset()
+         unif_meter.reset()
+@@ -105,7 +116,7 @@ def main():
+             x, y = encoder(torch.cat([im_x.to(opt.gpus[0]), im_y.to(opt.gpus[0])])).chunk(2)
+             align_loss_val = align_loss(x, y, alpha=opt.align_alpha)
+             unif_loss_val = (uniform_loss(x, t=opt.unif_t) + uniform_loss(y, t=opt.unif_t)) / 2
+-            loss = align_loss_val * opt.align_w + unif_loss_val * opt.unif_w
++            loss = align_loss_val * dual_var + unif_loss_val
+             align_meter.update(align_loss_val, x.shape[0])
+             unif_meter.update(unif_loss_val)
+             loss_meter.update(loss, x.shape[0])
+@@ -115,8 +126,21 @@ def main():
+             if ii % opt.log_interval == 0:
+                 print(f"Epoch {epoch}/{opt.epochs}\tIt {ii}/{len(loader)}\t" +
+                       f"{align_meter}\t{unif_meter}\t{loss_meter}\t{it_time_meter}")
++                if opt.wandb_log:
++                    wandb.log({"epoch":epoch, "align_loss": align_meter, "uniform_loss":unif_meter})
+             t0 = time.time()
+         scheduler.step()
++        with torch.no_grad():
++            align_meter.reset()
++            for ii, (im_x, im_y) in enumerate(loader):
++                x, y = encoder(torch.cat([im_x.to(opt.gpus[0]), im_y.to(opt.gpus[0])])).chunk(2)
++                align_loss_val = align_loss(x, y, alpha=opt.align_alpha)
++                align_meter.update(align_loss_val, x.shape[0])
++            slack = align_meter.avg - opt.align_eps
++            dual_var = max(0,dual_var + slack)
++            print(f"dual var {dual_var}, slack {slack}")
++            if opt.wandb_log:
++                wandb.log({"epoch":epoch, "dual_var": dual_var, "slack":slack})
+     ckpt_file = os.path.join(opt.save_folder, 'encoder.pth')
+     torch.save(encoder.module.state_dict(), ckpt_file)
+     print(f'Saved to {ckpt_file}')

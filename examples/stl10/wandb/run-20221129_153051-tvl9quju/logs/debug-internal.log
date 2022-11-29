@@ -1,0 +1,56 @@
+2022-11-29 15:30:52,178 INFO    MainThread:21311 [internal.py:wandb_internal():90] W&B internal server running at pid: 21311, started at: 2022-11-29 15:30:52.178761
+2022-11-29 15:30:52,181 INFO    WriterThread:21311 [datastore.py:open_for_write():75] open: /home/chiche/align_uniform-1/examples/stl10/wandb/run-20221129_153051-tvl9quju/run-tvl9quju.wandb
+2022-11-29 15:30:52,182 DEBUG   SenderThread:21311 [sender.py:send():232] send: header
+2022-11-29 15:30:52,182 DEBUG   SenderThread:21311 [sender.py:send():232] send: run
+2022-11-29 15:30:52,319 DEBUG   HandlerThread:21311 [handler.py:handle_request():141] handle_request: check_version
+2022-11-29 15:30:52,320 INFO    SenderThread:21311 [dir_watcher.py:__init__():197] watching files in: /home/chiche/align_uniform-1/examples/stl10/wandb/run-20221129_153051-tvl9quju/files
+2022-11-29 15:30:52,320 INFO    SenderThread:21311 [sender.py:_start_run_threads():811] run started: tvl9quju with start time 1669753851
+2022-11-29 15:30:52,320 DEBUG   SenderThread:21311 [sender.py:send():232] send: summary
+2022-11-29 15:30:52,320 INFO    SenderThread:21311 [sender.py:_save_file():948] saving file wandb-summary.json with policy end
+2022-11-29 15:30:52,321 DEBUG   SenderThread:21311 [sender.py:send_request():246] send_request: check_version
+2022-11-29 15:30:52,421 DEBUG   HandlerThread:21311 [handler.py:handle_request():141] handle_request: run_start
+2022-11-29 15:30:52,427 DEBUG   HandlerThread:21311 [meta.py:__init__():35] meta init
+2022-11-29 15:30:52,427 DEBUG   HandlerThread:21311 [meta.py:__init__():49] meta init done
+2022-11-29 15:30:52,427 DEBUG   HandlerThread:21311 [meta.py:probe():209] probe
+2022-11-29 15:30:52,433 DEBUG   HandlerThread:21311 [meta.py:_setup_git():199] setup git
+2022-11-29 15:30:52,452 DEBUG   HandlerThread:21311 [meta.py:_setup_git():206] setup git done
+2022-11-29 15:30:52,452 DEBUG   HandlerThread:21311 [meta.py:_save_code():87] save code
+2022-11-29 15:30:52,461 DEBUG   HandlerThread:21311 [meta.py:_save_code():108] save code done
+2022-11-29 15:30:52,461 DEBUG   HandlerThread:21311 [meta.py:_save_patches():125] save patches
+2022-11-29 15:30:52,515 DEBUG   HandlerThread:21311 [meta.py:_save_patches():167] save patches done
+2022-11-29 15:30:52,515 DEBUG   HandlerThread:21311 [meta.py:_save_pip():53] save pip
+2022-11-29 15:30:52,515 DEBUG   HandlerThread:21311 [meta.py:_save_pip():67] save pip done
+2022-11-29 15:30:52,515 DEBUG   HandlerThread:21311 [meta.py:_save_conda():74] save conda
+2022-11-29 15:30:53,322 INFO    Thread-7  :21311 [dir_watcher.py:_on_file_created():244] file/dir created: /home/chiche/align_uniform-1/examples/stl10/wandb/run-20221129_153051-tvl9quju/files/code/examples/stl10/main.py
+2022-11-29 15:30:53,322 INFO    Thread-7  :21311 [dir_watcher.py:_on_file_created():244] file/dir created: /home/chiche/align_uniform-1/examples/stl10/wandb/run-20221129_153051-tvl9quju/files/diff.patch
+2022-11-29 15:30:53,323 INFO    Thread-7  :21311 [dir_watcher.py:_on_file_created():244] file/dir created: /home/chiche/align_uniform-1/examples/stl10/wandb/run-20221129_153051-tvl9quju/files/wandb-summary.json
+2022-11-29 15:30:53,323 INFO    Thread-7  :21311 [dir_watcher.py:_on_file_created():244] file/dir created: /home/chiche/align_uniform-1/examples/stl10/wandb/run-20221129_153051-tvl9quju/files/requirements.txt
+2022-11-29 15:30:53,323 INFO    Thread-7  :21311 [dir_watcher.py:_on_file_created():244] file/dir created: /home/chiche/align_uniform-1/examples/stl10/wandb/run-20221129_153051-tvl9quju/files/conda-environment.yaml
+2022-11-29 15:30:53,323 INFO    Thread-7  :21311 [dir_watcher.py:_on_file_created():244] file/dir created: /home/chiche/align_uniform-1/examples/stl10/wandb/run-20221129_153051-tvl9quju/files/code
+2022-11-29 15:30:53,323 INFO    Thread-7  :21311 [dir_watcher.py:_on_file_created():244] file/dir created: /home/chiche/align_uniform-1/examples/stl10/wandb/run-20221129_153051-tvl9quju/files/code/examples
+2022-11-29 15:30:53,323 INFO    Thread-7  :21311 [dir_watcher.py:_on_file_created():244] file/dir created: /home/chiche/align_uniform-1/examples/stl10/wandb/run-20221129_153051-tvl9quju/files/code/examples/stl10
+2022-11-29 15:30:58,325 INFO    Thread-7  :21311 [dir_watcher.py:_on_file_created():244] file/dir created: /home/chiche/align_uniform-1/examples/stl10/wandb/run-20221129_153051-tvl9quju/files/output.log
+2022-11-29 15:30:58,613 DEBUG   HandlerThread:21311 [meta.py:_save_conda():84] save conda done
+2022-11-29 15:30:58,614 DEBUG   HandlerThread:21311 [meta.py:probe():247] probe done
+2022-11-29 15:30:58,636 DEBUG   HandlerThread:21311 [handler.py:handle_request():141] handle_request: stop_status
+2022-11-29 15:30:58,636 DEBUG   SenderThread:21311 [sender.py:send_request():246] send_request: stop_status
+2022-11-29 15:30:58,750 DEBUG   SenderThread:21311 [sender.py:send():232] send: telemetry
+2022-11-29 15:30:58,750 DEBUG   SenderThread:21311 [sender.py:send():232] send: config
+2022-11-29 15:30:58,751 DEBUG   SenderThread:21311 [sender.py:send():232] send: files
+2022-11-29 15:30:58,751 INFO    SenderThread:21311 [sender.py:_save_file():948] saving file wandb-metadata.json with policy now
+2022-11-29 15:30:58,751 INFO    SenderThread:21311 [sender.py:_save_file():948] saving file code/examples/stl10/main.py with policy now
+2022-11-29 15:30:58,751 INFO    SenderThread:21311 [sender.py:_save_file():948] saving file diff.patch with policy now
+2022-11-29 15:30:59,325 INFO    Thread-7  :21311 [dir_watcher.py:_on_file_modified():257] file/dir modified: /home/chiche/align_uniform-1/examples/stl10/wandb/run-20221129_153051-tvl9quju/files/conda-environment.yaml
+2022-11-29 15:30:59,325 INFO    Thread-7  :21311 [dir_watcher.py:_on_file_created():244] file/dir created: /home/chiche/align_uniform-1/examples/stl10/wandb/run-20221129_153051-tvl9quju/files/wandb-metadata.json
+2022-11-29 15:30:59,411 INFO    Thread-12 :21311 [upload_job.py:push():132] Uploaded file /tmp/tmpbjlqop1kwandb/33hhs1xq-code/examples/stl10/main.py
+2022-11-29 15:30:59,415 INFO    Thread-11 :21311 [upload_job.py:push():132] Uploaded file /tmp/tmpbjlqop1kwandb/v6nsn3ab-wandb-metadata.json
+2022-11-29 15:30:59,438 INFO    Thread-13 :21311 [upload_job.py:push():132] Uploaded file /tmp/tmpbjlqop1kwandb/37tmvwef-diff.patch
+2022-11-29 15:30:59,859 WARNING MainThread:21311 [internal.py:wandb_internal():153] Internal process interrupt: 1
+2022-11-29 15:30:59,862 DEBUG   SenderThread:21311 [sender.py:send():232] send: telemetry
+2022-11-29 15:30:59,975 WARNING MainThread:21311 [internal.py:wandb_internal():153] Internal process interrupt: 2
+2022-11-29 15:30:59,976 ERROR   MainThread:21311 [internal.py:wandb_internal():156] Internal process interrupted.
+2022-11-29 15:31:00,326 INFO    Thread-7  :21311 [dir_watcher.py:_on_file_modified():257] file/dir modified: /home/chiche/align_uniform-1/examples/stl10/wandb/run-20221129_153051-tvl9quju/files/output.log
+2022-11-29 15:31:00,862 INFO    WriterThread:21311 [datastore.py:close():279] close: /home/chiche/align_uniform-1/examples/stl10/wandb/run-20221129_153051-tvl9quju/run-tvl9quju.wandb
+2022-11-29 15:31:00,862 INFO    SenderThread:21311 [sender.py:finish():1110] shutting down sender
+2022-11-29 15:31:00,862 INFO    SenderThread:21311 [dir_watcher.py:finish():312] shutting down directory watcher
+2022-11-29 15:31:00,863 INFO    MainThread:21311 [internal.py:handle_exit():80] Internal process exited

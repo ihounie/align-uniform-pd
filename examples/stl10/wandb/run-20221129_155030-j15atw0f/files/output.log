@@ -1,0 +1,15 @@
+
+Optimize: 0.98 * loss_align(alpha=2) + 0.96 * loss_uniform(t=2)
+Files already downloaded and verified
+Files already downloaded and verified
+Epoch 0/200	It 0/137	align_loss 1.193284 (1.193284)	uniform_loss -2.514632 (-2.514632)	total_loss -1.296488 (-1.296488)	iter_time 8.926471 (8.926471)
+Traceback (most recent call last):
+  File "/home/chiche/align_uniform-1/examples/stl10/main.py", line 197, in <module>
+    main()
+  File "/home/chiche/align_uniform-1/examples/stl10/main.py", line 188, in main
+    val_acc = train_linear(model, lin_train_loader, lin_val_loader, opt)
+  File "/home/chiche/align_uniform-1/examples/stl10/linear_eval.py", line 149, in train_linear
+    feats = encoder(images.to(opt.gpus[0]), layer_index=opt.layer_index).flatten(1)
+AttributeError: 'Namespace' object has no attribute 'layer_index'
+dual var 0.6652505246301491, slack -0.35558280870318415
+Feature dimension: 4096

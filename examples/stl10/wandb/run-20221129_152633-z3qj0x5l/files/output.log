@@ -1,0 +1,17 @@
+
+Optimize: 0.98 * loss_align(alpha=2) + 0.96 * loss_uniform(t=2)
+Files already downloaded and verified
+Files already downloaded and verified
+Epoch 0/200	It 0/137	align_loss 1.125250 (1.125250)	uniform_loss -2.377794 (-2.377794)	total_loss -1.229101 (-1.229101)	iter_time 9.048072 (9.048072)
+Epoch 0/200	It 40/137	align_loss 0.539563 (0.313591)	uniform_loss -1.413758 (-0.861449)	total_loss -0.862954 (-0.541325)	iter_time 0.202878 (0.414576)
+Epoch 0/200	It 80/137	align_loss 0.905885 (0.468837)	uniform_loss -2.587611 (-1.410190)	total_loss -1.662853 (-0.931585)	iter_time 0.203152 (0.308374)
+Epoch 0/200	It 120/137	align_loss 0.834340 (0.588107)	uniform_loss -2.946642 (-1.863209)	total_loss -2.094919 (-1.262850)	iter_time 0.205769 (0.272657)
+dual var 1.401280339558919, slack 0.3804470062255859
+Traceback (most recent call last):
+  File "/home/chiche/align_uniform-1/examples/stl10/main.py", line 196, in <module>
+    main()
+  File "/home/chiche/align_uniform-1/examples/stl10/main.py", line 187, in main
+    val_acc = train_linear(encoder, lin_train_loader, lin_val_loader, opt)
+  File "/home/chiche/align_uniform-1/examples/stl10/linear_eval.py", line 131, in train_linear
+    eval_numel = encoder(sample.unsqueeze(0).to(opts.gpus[0]), layer_index=opt.lin_layer_index).numel()
+NameError: name 'opts' is not defined

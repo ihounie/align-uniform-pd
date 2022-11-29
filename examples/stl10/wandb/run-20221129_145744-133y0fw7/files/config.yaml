@@ -1,0 +1,97 @@
+wandb_version: 1
+
+_wandb:
+  desc: null
+  value:
+    cli_version: 0.12.16
+    code_path: code/examples/stl10/main.py
+    framework: torch
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    python_version: 3.9.12
+    start_time: 1669751864
+    t:
+      1:
+      - 1
+      - 41
+      - 55
+      3:
+      - 13
+      4: 3.9.12
+      5: 0.12.16
+      8:
+      - 5
+align_alpha:
+  desc: null
+  value: 2
+align_eps:
+  desc: null
+  value: 0.4
+align_w:
+  desc: null
+  value: 0.98
+batch_size:
+  desc: null
+  value: 768
+data_folder:
+  desc: null
+  value: ./data
+epochs:
+  desc: null
+  value: 200
+feat_dim:
+  desc: null
+  value: 128
+gpus:
+  desc: null
+  value:
+  - cuda:0
+  - cuda:1
+log_interval:
+  desc: null
+  value: 40
+lr:
+  desc: null
+  value: 0.36
+lr_decay_epochs:
+  desc: null
+  value:
+  - 155
+  - 170
+  - 185
+lr_decay_rate:
+  desc: null
+  value: 0.1
+lr_dual:
+  desc: null
+  value: 0.2
+momentum:
+  desc: null
+  value: 0.9
+num_workers:
+  desc: null
+  value: 20
+project:
+  desc: null
+  value: Uniformity
+result_folder:
+  desc: null
+  value: ./results
+run:
+  desc: null
+  value: PD
+save_folder:
+  desc: null
+  value: ./results/align0.98alpha2_unif0.96t2
+unif_t:
+  desc: null
+  value: 2
+unif_w:
+  desc: null
+  value: 0.96
+wandb_log:
+  desc: null
+  value: true
+weight_decay:
+  desc: null
+  value: 0.0001

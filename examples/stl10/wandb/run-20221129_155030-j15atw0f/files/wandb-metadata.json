@@ -1,0 +1,29 @@
+{
+    "os": "Linux-5.15.0-46-generic-x86_64-with-glibc2.31",
+    "python": "3.9.12",
+    "heartbeatAt": "2022-11-29T20:50:31.233743",
+    "startedAt": "2022-11-29T20:50:30.490643",
+    "docker": null,
+    "gpu": "NVIDIA RTX A6000",
+    "gpu_count": 2,
+    "cpu_count": 48,
+    "cuda": null,
+    "args": [
+        "--gpus",
+        "0",
+        "1",
+        "--wandb_log"
+    ],
+    "state": "running",
+    "program": "/home/chiche/align_uniform-1/examples/stl10/main.py",
+    "codePath": "examples/stl10/main.py",
+    "git": {
+        "remote": "https://github.com/ssnl/align_uniform.git",
+        "commit": "78ccdb19af60126564ef60c84443722ae2fda28d"
+    },
+    "email": "ihounie@seas.iupenn.edu",
+    "root": "/home/chiche/align_uniform-1",
+    "host": "plaza",
+    "username": "chiche",
+    "executable": "/home/chiche/miniconda3/envs/daug/bin/python"
+}

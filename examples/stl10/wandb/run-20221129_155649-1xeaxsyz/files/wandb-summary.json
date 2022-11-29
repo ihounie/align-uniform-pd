@@ -1,0 +1,1 @@
+{"epoch": 0, "align_loss": 1.2459620237350464, "uniform_loss": -2.652787923812866, "_timestamp": 1669755442, "_runtime": 33, "_step": 1, "dual_var": 0.6735450697441895, "slack": -0.3472882635891438, "_wandb": {"runtime": 36}}

@@ -1,0 +1,19 @@
+
+Optimize: 0.98 * loss_align(alpha=2) + 0.96 * loss_uniform(t=2)
+Files already downloaded and verified
+Files already downloaded and verified
+Epoch 0/200	It 0/137	align_loss 1.194291 (1.194291)	uniform_loss -2.462687 (-2.462687)	total_loss -1.243515 (-1.243515)	iter_time 9.162549 (9.162549)
+dual var 0.7084987570842106, slack -0.31233457624912264
+Feature dimension: 4096
+Traceback (most recent call last):
+  File "/home/chiche/align_uniform-1/examples/stl10/main.py", line 198, in <module>
+    main()
+  File "/home/chiche/align_uniform-1/examples/stl10/main.py", line 189, in main
+    val_acc = train_linear(model, lin_train_loader, lin_val_loader, opt)
+  File "/home/chiche/align_uniform-1/examples/stl10/linear_eval.py", line 153, in train_linear
+    loss.backward()
+  File "/home/chiche/miniconda3/envs/daug/lib/python3.9/site-packages/torch/_tensor.py", line 487, in backward
+    torch.autograd.backward(
+  File "/home/chiche/miniconda3/envs/daug/lib/python3.9/site-packages/torch/autograd/__init__.py", line 197, in backward
+    Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+RuntimeError: element 0 of tensors does not require grad and does not have a grad_fn

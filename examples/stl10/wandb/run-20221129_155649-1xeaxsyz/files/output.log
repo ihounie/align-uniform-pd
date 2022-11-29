@@ -1,0 +1,18 @@
+
+Optimize: 0.98 * loss_align(alpha=2) + 0.96 * loss_uniform(t=2)
+Files already downloaded and verified
+Files already downloaded and verified
+Epoch 0/200	It 0/137	align_loss 1.245962 (1.245962)	uniform_loss -2.652788 (-2.652788)	total_loss -1.380868 (-1.380868)	iter_time 9.209650 (9.209650)
+dual var 0.6735450697441895, slack -0.3472882635891438
+Feature dimension: 4096
+Epoch 0/100	It 0/40	loss 2.298434 (2.298434)	iter_time 0.444774 (0.444774)
+Traceback (most recent call last):
+  File "/home/chiche/align_uniform-1/examples/stl10/main.py", line 198, in <module>
+    main()
+  File "/home/chiche/align_uniform-1/examples/stl10/main.py", line 189, in main
+    val_acc = train_linear(model, lin_train_loader, lin_val_loader, opt)
+  File "/home/chiche/align_uniform-1/examples/stl10/linear_eval.py", line 160, in train_linear
+    val_acc = validate(opt, encoder, classifier, val_loader)
+  File "/home/chiche/align_uniform-1/examples/stl10/linear_eval.py", line 75, in validate
+    pred = classifier(encoder(images.to(opt.gpus[0]), layer_index=opt.layer_index).flatten(1)).argmax(dim=1)
+AttributeError: 'Namespace' object has no attribute 'layer_index'

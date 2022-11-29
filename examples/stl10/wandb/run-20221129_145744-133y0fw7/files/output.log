@@ -1,0 +1,149 @@
+
+Optimize: 0.98 * loss_align(alpha=2) + 0.96 * loss_uniform(t=2)
+Files already downloaded and verified
+Epoch 0/200	It 0/137	align_loss 1.142851 (1.142851)	uniform_loss -2.415830 (-2.415830)	total_loss -1.249169 (-1.249169)	iter_time 9.215253 (9.215253)
+Epoch 0/200	It 40/137	align_loss 0.584650 (0.365692)	uniform_loss -1.672376 (-0.972843)	total_loss -1.075546 (-0.599532)	iter_time 0.204474 (0.418218)
+Epoch 0/200	It 80/137	align_loss 0.858029 (0.573474)	uniform_loss -2.776763 (-1.631629)	total_loss -1.900859 (-1.046208)	iter_time 0.203966 (0.310054)
+Epoch 0/200	It 120/137	align_loss 0.818223 (0.666416)	uniform_loss -3.136724 (-2.082446)	total_loss -2.301455 (-1.402146)	iter_time 0.204858 (0.273820)
+dual var 1.4751589854558307, slack 0.45432565212249754
+Epoch 1/200	It 0/137	align_loss 0.894254 (0.894254)	uniform_loss -3.235180 (-3.235180)	total_loss -1.916013 (-1.916013)	iter_time 2.182811 (2.182811)
+Epoch 1/200	It 40/137	align_loss 0.784012 (0.793752)	uniform_loss -3.271486 (-3.223278)	total_loss -2.114943 (-2.052367)	iter_time 0.207542 (0.249837)
+Epoch 1/200	It 80/137	align_loss 0.748381 (0.784327)	uniform_loss -3.379171 (-3.282070)	total_loss -2.275190 (-2.125064)	iter_time 0.208080 (0.226226)
+Epoch 1/200	It 120/137	align_loss 0.739796 (0.773391)	uniform_loss -3.440586 (-3.329088)	total_loss -2.349269 (-2.188214)	iter_time 0.206056 (0.218383)
+dual var 1.800534697373708, slack 0.3253757119178772
+Epoch 2/200	It 0/137	align_loss 0.737811 (0.737811)	uniform_loss -3.474102 (-3.474102)	total_loss -2.145648 (-2.145648)	iter_time 2.514057 (2.514057)
+Epoch 2/200	It 40/137	align_loss 0.666073 (0.699840)	uniform_loss -3.415702 (-3.430909)	total_loss -2.216415 (-2.170822)	iter_time 0.206199 (0.259047)
+Epoch 2/200	It 80/137	align_loss 0.639734 (0.682531)	uniform_loss -3.454397 (-3.438888)	total_loss -2.302533 (-2.209965)	iter_time 0.210994 (0.231443)
+Epoch 2/200	It 120/137	align_loss 0.642378 (0.668042)	uniform_loss -3.468194 (-3.451418)	total_loss -2.311570 (-2.248585)	iter_time 0.208204 (0.222185)
+dual var 2.026015349229177, slack 0.22548065185546873
+Epoch 3/200	It 0/137	align_loss 0.610355 (0.610355)	uniform_loss -3.484379 (-3.484379)	total_loss -2.247790 (-2.247790)	iter_time 2.452536 (2.452536)
+Epoch 3/200	It 40/137	align_loss 0.588575 (0.607173)	uniform_loss -3.433723 (-3.461606)	total_loss -2.241262 (-2.231465)	iter_time 0.205800 (0.257799)
+Epoch 3/200	It 80/137	align_loss 0.569636 (0.596569)	uniform_loss -3.460495 (-3.462917)	total_loss -2.306404 (-2.254259)	iter_time 0.205788 (0.230707)
+Epoch 3/200	It 120/137	align_loss 0.583280 (0.590342)	uniform_loss -3.482799 (-3.465617)	total_loss -2.301064 (-2.269576)	iter_time 0.208035 (0.221551)
+dual var 2.184466584523519, slack 0.15845123529434202
+Epoch 4/200	It 0/137	align_loss 0.549913 (0.549913)	uniform_loss -3.475268 (-3.475268)	total_loss -2.274002 (-2.274002)	iter_time 2.503442 (2.503442)
+Epoch 4/200	It 40/137	align_loss 0.559882 (0.554761)	uniform_loss -3.471829 (-3.469517)	total_loss -2.248785 (-2.257661)	iter_time 0.207706 (0.258811)
+Epoch 4/200	It 80/137	align_loss 0.537069 (0.552497)	uniform_loss -3.481077 (-3.471308)	total_loss -2.307867 (-2.264396)	iter_time 0.206204 (0.231216)
+Epoch 4/200	It 120/137	align_loss 0.507796 (0.547646)	uniform_loss -3.482092 (-3.473296)	total_loss -2.372829 (-2.276981)	iter_time 0.208358 (0.221889)
+dual var 2.307376285394033, slack 0.1229097008705139
+Epoch 5/200	It 0/137	align_loss 0.529949 (0.529949)	uniform_loss -3.493192 (-3.493192)	total_loss -2.270401 (-2.270401)	iter_time 2.255441 (2.255441)
+Epoch 5/200	It 40/137	align_loss 0.520425 (0.522232)	uniform_loss -3.462355 (-3.474856)	total_loss -2.261540 (-2.269869)	iter_time 0.208409 (0.253074)
+Epoch 5/200	It 80/137	align_loss 0.553706 (0.517212)	uniform_loss -3.497707 (-3.476648)	total_loss -2.220100 (-2.283245)	iter_time 0.208229 (0.228587)
+Epoch 5/200	It 120/137	align_loss 0.524104 (0.516244)	uniform_loss -3.478854 (-3.478301)	total_loss -2.269550 (-2.287133)	iter_time 0.207536 (0.220450)
+dual var 2.4215382297833763, slack 0.11416194438934324
+Epoch 6/200	It 0/137	align_loss 0.506312 (0.506312)	uniform_loss -3.488154 (-3.488154)	total_loss -2.262101 (-2.262101)	iter_time 2.302988 (2.302988)
+Epoch 6/200	It 40/137	align_loss 0.500660 (0.497633)	uniform_loss -3.495962 (-3.483375)	total_loss -2.283596 (-2.278339)	iter_time 0.208012 (0.254102)
+Epoch 6/200	It 80/137	align_loss 0.492136 (0.494795)	uniform_loss -3.489385 (-3.483810)	total_loss -2.297659 (-2.285645)	iter_time 0.207499 (0.228908)
+Epoch 6/200	It 120/137	align_loss 0.470992 (0.490325)	uniform_loss -3.494557 (-3.485749)	total_loss -2.354032 (-2.298410)	iter_time 0.207769 (0.220367)
+dual var 2.515612961848577, slack 0.09407473206520078
+Epoch 7/200	It 0/137	align_loss 0.493830 (0.493830)	uniform_loss -3.488011 (-3.488011)	total_loss -2.245726 (-2.245726)	iter_time 2.521099 (2.521099)
+Epoch 7/200	It 40/137	align_loss 0.447383 (0.477467)	uniform_loss -3.492334 (-3.483494)	total_loss -2.366891 (-2.282371)	iter_time 0.207478 (0.259325)
+Epoch 7/200	It 80/137	align_loss 0.455897 (0.474916)	uniform_loss -3.479952 (-3.483846)	total_loss -2.333091 (-2.289140)	iter_time 0.206861 (0.231469)
+Epoch 7/200	It 120/137	align_loss 0.455992 (0.472158)	uniform_loss -3.493252 (-3.485421)	total_loss -2.346153 (-2.297654)	iter_time 0.207578 (0.222139)
+dual var 2.582953043778738, slack 0.0673400819301605
+Epoch 8/200	It 0/137	align_loss 0.457799 (0.457799)	uniform_loss -3.483377 (-3.483377)	total_loss -2.300904 (-2.300904)	iter_time 2.126145 (2.126145)
+Epoch 8/200	It 40/137	align_loss 0.439442 (0.462815)	uniform_loss -3.472756 (-3.481508)	total_loss -2.337697 (-2.286078)	iter_time 0.207621 (0.251636)
+Epoch 8/200	It 80/137	align_loss 0.450260 (0.464242)	uniform_loss -3.484514 (-3.483879)	total_loss -2.321512 (-2.284766)	iter_time 0.206728 (0.228241)
+Epoch 8/200	It 120/137	align_loss 0.455160 (0.461741)	uniform_loss -3.494930 (-3.484180)	total_loss -2.319273 (-2.291527)	iter_time 0.207977 (0.219896)
+dual var 2.63560776313146, slack 0.052654719352722146
+Epoch 9/200	It 0/137	align_loss 0.452994 (0.452994)	uniform_loss -3.482490 (-3.482490)	total_loss -2.288576 (-2.288576)	iter_time 2.249259 (2.249259)
+Epoch 9/200	It 40/137	align_loss 0.464600 (0.452727)	uniform_loss -3.476357 (-3.483534)	total_loss -2.251854 (-2.290322)	iter_time 0.203469 (0.253164)
+Epoch 9/200	It 80/137	align_loss 0.442171 (0.450709)	uniform_loss -3.485228 (-3.485618)	total_loss -2.319839 (-2.297727)	iter_time 0.206549 (0.228279)
+Epoch 9/200	It 120/137	align_loss 0.440344 (0.450578)	uniform_loss -3.491533 (-3.485545)	total_loss -2.330960 (-2.297998)	iter_time 0.206570 (0.220022)
+dual var 2.6740196843942012, slack 0.03841192126274107
+Epoch 10/200	It 0/137	align_loss 0.450316 (0.450316)	uniform_loss -3.490253 (-3.490253)	total_loss -2.286099 (-2.286099)	iter_time 2.204472 (2.204472)
+Epoch 10/200	It 40/137	align_loss 0.438467 (0.437697)	uniform_loss -3.479937 (-3.492765)	total_loss -2.307467 (-2.322355)	iter_time 0.205961 (0.251394)
+Epoch 10/200	It 80/137	align_loss 0.410694 (0.439045)	uniform_loss -3.495177 (-3.492383)	total_loss -2.396973 (-2.318368)	iter_time 0.207214 (0.227385)
+Epoch 10/200	It 120/137	align_loss 0.445054 (0.438294)	uniform_loss -3.495633 (-3.492247)	total_loss -2.305551 (-2.320240)	iter_time 0.208912 (0.219318)
+dual var 2.709635879596075, slack 0.03561619520187376
+Epoch 11/200	It 0/137	align_loss 0.463531 (0.463531)	uniform_loss -3.496857 (-3.496857)	total_loss -2.240857 (-2.240857)	iter_time 2.187987 (2.187987)
+Epoch 11/200	It 40/137	align_loss 0.438865 (0.441542)	uniform_loss -3.495595 (-3.491029)	total_loss -2.306430 (-2.294611)	iter_time 0.207757 (0.251944)
+Epoch 11/200	It 80/137	align_loss 0.421689 (0.436965)	uniform_loss -3.509475 (-3.493482)	total_loss -2.366851 (-2.309468)	iter_time 0.207640 (0.227619)
+Epoch 11/200	It 120/137	align_loss 0.414513 (0.434311)	uniform_loss -3.495656 (-3.495076)	total_loss -2.372478 (-2.318251)	iter_time 0.208596 (0.219447)
+dual var 2.7409989555676786, slack 0.03136307597160337
+Epoch 12/200	It 0/137	align_loss 0.447944 (0.447944)	uniform_loss -3.507174 (-3.507174)	total_loss -2.279359 (-2.279359)	iter_time 2.357777 (2.357777)
+Epoch 12/200	It 40/137	align_loss 0.413667 (0.430447)	uniform_loss -3.486065 (-3.498687)	total_loss -2.352204 (-2.318833)	iter_time 0.205461 (0.255157)
+Epoch 12/200	It 80/137	align_loss 0.439050 (0.430151)	uniform_loss -3.495832 (-3.498747)	total_loss -2.292397 (-2.319704)	iter_time 0.208460 (0.229278)
+Epoch 12/200	It 120/137	align_loss 0.437153 (0.430056)	uniform_loss -3.502972 (-3.498659)	total_loss -2.304738 (-2.319876)	iter_time 0.208258 (0.220530)
+dual var 2.7556062420209257, slack 0.014607286453247048
+Epoch 13/200	It 0/137	align_loss 0.404726 (0.404726)	uniform_loss -3.488294 (-3.488294)	total_loss -2.373030 (-2.373030)	iter_time 2.165771 (2.165771)
+Epoch 13/200	It 40/137	align_loss 0.411009 (0.417311)	uniform_loss -3.499458 (-3.504307)	total_loss -2.366880 (-2.354364)	iter_time 0.205913 (0.252959)
+Epoch 13/200	It 80/137	align_loss 0.422013 (0.418988)	uniform_loss -3.500795 (-3.502380)	total_loss -2.337893 (-2.347814)	iter_time 0.205039 (0.228146)
+Epoch 13/200	It 120/137	align_loss 0.402667 (0.417418)	uniform_loss -3.510453 (-3.503775)	total_loss -2.400860 (-2.353534)	iter_time 0.207834 (0.219978)
+dual var 2.766963138182959, slack 0.011356896162033059
+Epoch 14/200	It 0/137	align_loss 0.432945 (0.432945)	uniform_loss -3.507442 (-3.507442)	total_loss -2.309498 (-2.309498)	iter_time 2.144925 (2.144925)
+Epoch 14/200	It 40/137	align_loss 0.403193 (0.415845)	uniform_loss -3.495633 (-3.505273)	total_loss -2.380013 (-2.354645)	iter_time 0.209757 (0.250066)
+Epoch 14/200	It 80/137	align_loss 0.395509 (0.415450)	uniform_loss -3.500052 (-3.504706)	total_loss -2.405694 (-2.355170)	iter_time 0.208417 (0.226652)
+Epoch 14/200	It 120/137	align_loss 0.437414 (0.414449)	uniform_loss -3.506634 (-3.505786)	total_loss -2.296324 (-2.359021)	iter_time 0.208416 (0.219012)
+dual var 2.776746501525244, slack 0.009783363342285134
+Epoch 15/200	It 0/137	align_loss 0.421488 (0.421488)	uniform_loss -3.501447 (-3.501447)	total_loss -2.331082 (-2.331082)	iter_time 2.388092 (2.388092)
+Epoch 15/200	It 40/137	align_loss 0.433100 (0.412470)	uniform_loss -3.525546 (-3.508304)	total_loss -2.322938 (-2.362981)	iter_time 0.206189 (0.255733)
+Epoch 15/200	It 80/137	align_loss 0.424790 (0.411559)	uniform_loss -3.518985 (-3.509027)	total_loss -2.339452 (-2.366233)	iter_time 0.206085 (0.229527)
+Epoch 15/200	It 120/137	align_loss 0.391591 (0.409770)	uniform_loss -3.520671 (-3.510682)	total_loss -2.433323 (-2.372854)	iter_time 0.208891 (0.220632)
+dual var 2.7985597809155793, slack 0.02181327939033506
+Epoch 16/200	It 0/137	align_loss 0.402211 (0.402211)	uniform_loss -3.510000 (-3.510000)	total_loss -2.384389 (-2.384389)	iter_time 2.434543 (2.434543)
+Epoch 16/200	It 40/137	align_loss 0.411589 (0.409233)	uniform_loss -3.507483 (-3.508281)	total_loss -2.355627 (-2.363019)	iter_time 0.207448 (0.256918)
+Epoch 16/200	It 80/137	align_loss 0.394036 (0.406281)	uniform_loss -3.510937 (-3.511602)	total_loss -2.408203 (-2.374600)	iter_time 0.208467 (0.230139)
+Epoch 16/200	It 120/137	align_loss 0.390480 (0.406169)	uniform_loss -3.507680 (-3.512988)	total_loss -2.414899 (-2.376299)	iter_time 0.207182 (0.221114)
+dual var 2.8176226337750765, slack 0.019062852859497048
+Epoch 17/200	It 0/137	align_loss 0.414199 (0.414199)	uniform_loss -3.517525 (-3.517525)	total_loss -2.350468 (-2.350468)	iter_time 2.140841 (2.140841)
+Epoch 17/200	It 40/137	align_loss 0.414127 (0.402513)	uniform_loss -3.524078 (-3.518117)	total_loss -2.357226 (-2.383986)	iter_time 0.208315 (0.249903)
+Epoch 17/200	It 80/137	align_loss 0.382651 (0.404554)	uniform_loss -3.518906 (-3.517050)	total_loss -2.440741 (-2.377171)	iter_time 0.206875 (0.226610)
+Epoch 17/200	It 120/137	align_loss 0.385929 (0.404202)	uniform_loss -3.502914 (-3.517175)	total_loss -2.415512 (-2.378287)	iter_time 0.206912 (0.218730)
+dual var 2.812826075156531, slack -0.004796558618545554
+Epoch 18/200	It 0/137	align_loss 0.398439 (0.398439)	uniform_loss -3.532074 (-3.532074)	total_loss -2.411335 (-2.411335)	iter_time 2.165379 (2.165379)
+Epoch 18/200	It 40/137	align_loss 0.400660 (0.400406)	uniform_loss -3.519418 (-3.522254)	total_loss -2.392431 (-2.395981)	iter_time 0.208354 (0.250825)
+Epoch 18/200	It 80/137	align_loss 0.401375 (0.401397)	uniform_loss -3.528028 (-3.520980)	total_loss -2.399031 (-2.391921)	iter_time 0.208569 (0.227018)
+Epoch 18/200	It 120/137	align_loss 0.410107 (0.400548)	uniform_loss -3.529556 (-3.521465)	total_loss -2.375996 (-2.394793)	iter_time 0.209422 (0.219031)
+dual var 2.81548522313436, slack 0.0026591479778289573
+Epoch 19/200	It 0/137	align_loss 0.369455 (0.369455)	uniform_loss -3.517732 (-3.517732)	total_loss -2.477535 (-2.477535)	iter_time 2.151161 (2.151161)
+Epoch 19/200	It 40/137	align_loss 0.378114 (0.396038)	uniform_loss -3.539673 (-3.524985)	total_loss -2.475100 (-2.409946)	iter_time 0.205376 (0.249976)
+Epoch 19/200	It 80/137	align_loss 0.405208 (0.395513)	uniform_loss -3.521997 (-3.526484)	total_loss -2.381141 (-2.412924)	iter_time 0.206778 (0.226599)
+Epoch 19/200	It 120/137	align_loss 0.402691 (0.394590)	uniform_loss -3.525319 (-3.526481)	total_loss -2.391549 (-2.415519)	iter_time 0.208257 (0.218768)
+dual var 2.810108860333762, slack -0.005376362800598167
+Epoch 20/200	It 0/137	align_loss 0.391969 (0.391969)	uniform_loss -3.540182 (-3.540182)	total_loss -2.438707 (-2.438707)	iter_time 2.241768 (2.241768)
+Epoch 20/200	It 40/137	align_loss 0.397893 (0.396106)	uniform_loss -3.528570 (-3.525702)	total_loss -2.410447 (-2.412601)	iter_time 0.207372 (0.252425)
+Epoch 20/200	It 80/137	align_loss 0.386822 (0.394355)	uniform_loss -3.535480 (-3.528089)	total_loss -2.448469 (-2.419909)	iter_time 0.208760 (0.227845)
+Epoch 20/200	It 120/137	align_loss 0.385939 (0.395606)	uniform_loss -3.526854 (-3.528195)	total_loss -2.442325 (-2.416501)	iter_time 0.206914 (0.219591)
+dual var 2.801582511266074, slack -0.00852634906768801
+Epoch 21/200	It 0/137	align_loss 0.408334 (0.408334)	uniform_loss -3.523919 (-3.523919)	total_loss -2.379937 (-2.379937)	iter_time 2.346995 (2.346995)
+Epoch 21/200	It 40/137	align_loss 0.382354 (0.391848)	uniform_loss -3.545072 (-3.535572)	total_loss -2.473876 (-2.437778)	iter_time 0.206188 (0.254865)
+Epoch 21/200	It 80/137	align_loss 0.380607 (0.394623)	uniform_loss -3.526536 (-3.534465)	total_loss -2.460235 (-2.428897)	iter_time 0.206188 (0.229095)
+Epoch 21/200	It 120/137	align_loss 0.407569 (0.395247)	uniform_loss -3.532615 (-3.534489)	total_loss -2.390778 (-2.427171)	iter_time 0.207969 (0.220644)
+dual var 2.796556117137275, slack -0.005026394128799461
+Epoch 22/200	It 0/137	align_loss 0.391949 (0.391949)	uniform_loss -3.531447 (-3.531447)	total_loss -2.435340 (-2.435340)	iter_time 2.187027 (2.187027)
+Epoch 22/200	It 40/137	align_loss 0.411090 (0.389090)	uniform_loss -3.541998 (-3.538969)	total_loss -2.392363 (-2.450857)	iter_time 0.207729 (0.251942)
+Epoch 22/200	It 80/137	align_loss 0.387615 (0.389940)	uniform_loss -3.542116 (-3.538401)	total_loss -2.458129 (-2.447912)	iter_time 0.205950 (0.227513)
+Epoch 22/200	It 120/137	align_loss 0.404909 (0.389347)	uniform_loss -3.545545 (-3.539305)	total_loss -2.413194 (-2.450473)	iter_time 0.207973 (0.219353)
+dual var 2.7884759088357307, slack -0.008080208301544212
+Epoch 23/200	It 0/137	align_loss 0.390843 (0.390843)	uniform_loss -3.545227 (-3.545227)	total_loss -2.455372 (-2.455372)	iter_time 2.154464 (2.154464)
+Epoch 23/200	It 40/137	align_loss 0.375357 (0.383919)	uniform_loss -3.546435 (-3.543018)	total_loss -2.499762 (-2.472470)	iter_time 0.206292 (0.252827)
+Epoch 23/200	It 80/137	align_loss 0.410635 (0.386576)	uniform_loss -3.542027 (-3.542852)	total_loss -2.396982 (-2.464894)	iter_time 0.206553 (0.228049)
+Epoch 23/200	It 120/137	align_loss 0.394358 (0.387612)	uniform_loss -3.545018 (-3.543248)	total_loss -2.445361 (-2.462404)	iter_time 0.208473 (0.219749)
+dual var 2.7724770148595193, slack -0.01599889397621157
+Epoch 24/200	It 0/137	align_loss 0.375559 (0.375559)	uniform_loss -3.539824 (-3.539824)	total_loss -2.498595 (-2.498596)	iter_time 2.157423 (2.157423)
+Epoch 24/200	It 40/137	align_loss 0.370836 (0.387474)	uniform_loss -3.542448 (-3.545222)	total_loss -2.514314 (-2.470958)	iter_time 0.206702 (0.250209)
+Epoch 24/200	It 80/137	align_loss 0.385540 (0.387656)	uniform_loss -3.537039 (-3.546604)	total_loss -2.468139 (-2.471836)	iter_time 0.206021 (0.226742)
+Epoch 24/200	It 120/137	align_loss 0.400726 (0.388754)	uniform_loss -3.550153 (-3.545320)	total_loss -2.439150 (-2.467508)	iter_time 0.207538 (0.218818)
+dual var 2.754572530587516, slack -0.017904484272003196
+Epoch 25/200	It 0/137	align_loss 0.365968 (0.365968)	uniform_loss -3.542886 (-3.542886)	total_loss -2.534801 (-2.534801)	iter_time 2.170749 (2.170749)
+Epoch 25/200	It 40/137	align_loss 0.399726 (0.388074)	uniform_loss -3.554500 (-3.551045)	total_loss -2.453425 (-2.482066)	iter_time 0.206237 (0.251060)
+Epoch 25/200	It 80/137	align_loss 0.419411 (0.387867)	uniform_loss -3.552401 (-3.552980)	total_loss -2.397101 (-2.484572)	iter_time 0.206768 (0.227156)
+Epoch 25/200	It 120/137	align_loss 0.393415 (0.387695)	uniform_loss -3.556744 (-3.553327)	total_loss -2.473054 (-2.485392)	iter_time 0.207647 (0.219272)
+dual var 2.74985247453054, slack -0.0047200560569763406
+Epoch 26/200	It 0/137	align_loss 0.410604 (0.410604)	uniform_loss -3.562466 (-3.562466)	total_loss -2.433366 (-2.433366)	iter_time 2.483635 (2.483635)
+Epoch 26/200	It 40/137	align_loss 0.385198 (0.381050)	uniform_loss -3.555827 (-3.556579)	total_loss -2.496589 (-2.508748)	iter_time 0.208521 (0.258170)
+Epoch 26/200	It 80/137	align_loss 0.396770 (0.381960)	uniform_loss -3.564586 (-3.557461)	total_loss -2.473526 (-2.507125)	iter_time 0.208888 (0.230731)
+Epoch 26/200	It 120/137	align_loss 0.381857 (0.382405)	uniform_loss -3.560901 (-3.557224)	total_loss -2.510850 (-2.505664)	iter_time 0.206914 (0.221490)
+dual var 2.7349027117093425, slack -0.014949762821197532
+Epoch 27/200	It 0/137	align_loss 0.388147 (0.388147)	uniform_loss -3.564022 (-3.564022)	total_loss -2.502477 (-2.502477)	iter_time 2.427021 (2.427021)
+Epoch 27/200	It 40/137	align_loss 0.380796 (0.380080)	uniform_loss -3.559556 (-3.559279)	total_loss -2.518117 (-2.519797)	iter_time 0.205883 (0.256713)
+Epoch 27/200	It 80/137	align_loss 0.393603 (0.385084)	uniform_loss -3.562159 (-3.559393)	total_loss -2.485694 (-2.506224)	iter_time 0.208667 (0.230165)
+Epoch 27/200	It 120/137	align_loss 0.399755 (0.385565)	uniform_loss -3.563347 (-3.559498)	total_loss -2.470057 (-2.505016)	iter_time 0.206602 (0.221084)
+dual var 2.7183600743611676, slack -0.01654263734817507
+Epoch 28/200	It 0/137	align_loss 0.389371 (0.389371)	uniform_loss -3.564786 (-3.564786)	total_loss -2.506336 (-2.506336)	iter_time 2.263242 (2.263242)
+Epoch 28/200	It 40/137	align_loss 0.383014 (0.386897)	uniform_loss -3.557388 (-3.563854)	total_loss -2.516218 (-2.512128)	iter_time 0.204804 (0.253010)
+Epoch 28/200	It 80/137	align_loss 0.367175 (0.383926)	uniform_loss -3.564542 (-3.563130)	total_loss -2.566427 (-2.519480)	iter_time 0.206913 (0.228547)
+Epoch 28/200	It 120/137	align_loss 0.377678 (0.383956)	uniform_loss -3.570295 (-3.564043)	total_loss -2.543631 (-2.520312)	iter_time 0.208251 (0.220423)
+dual var 2.698855413993202, slack -0.01950466036796572
+Epoch 29/200	It 0/137	align_loss 0.382069 (0.382069)	uniform_loss -3.569008 (-3.569008)	total_loss -2.537859 (-2.537859)	iter_time 2.233449 (2.233449)

@@ -1,0 +1,17 @@
+
+Optimize: 0.98 * loss_align(alpha=2) + 0.96 * loss_uniform(t=2)
+Files already downloaded and verified
+Files already downloaded and verified
+Epoch 0/200	It 0/137	align_loss 1.300439 (1.300439)	uniform_loss -2.724763 (-2.724763)	total_loss -1.397232 (-1.397232)	iter_time 9.289801 (9.289801)
+Epoch 0/200	It 40/137	align_loss 0.358662 (0.226247)	uniform_loss -1.056441 (-0.618202)	total_loss -0.690307 (-0.387241)	iter_time 0.203556 (0.419955)
+Epoch 0/200	It 80/137	align_loss 0.672926 (0.380838)	uniform_loss -2.140558 (-1.099694)	total_loss -1.453613 (-0.710922)	iter_time 0.204765 (0.310770)
+Epoch 0/200	It 120/137	align_loss 0.882260 (0.523669)	uniform_loss -2.884606 (-1.581608)	total_loss -1.983965 (-1.047029)	iter_time 0.205466 (0.274111)
+dual var 1.4846130569775897, slack 0.46377972364425657
+Traceback (most recent call last):
+  File "/home/chiche/align_uniform-1/examples/stl10/main.py", line 196, in <module>
+    main()
+  File "/home/chiche/align_uniform-1/examples/stl10/main.py", line 187, in main
+    val_acc = train_linear(encoder, lin_train_loader, lin_val_loader, opt)
+  File "/home/chiche/align_uniform-1/examples/stl10/linear_eval.py", line 131, in train_linear
+    eval_numel = encoder(sample.unsqueeze(0).to(opt.gpu), layer_index=opt.layer_index).numel()
+AttributeError: 'Namespace' object has no attribute 'gpu'
