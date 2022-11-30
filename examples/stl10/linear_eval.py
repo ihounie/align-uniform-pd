@@ -133,8 +133,8 @@ def train_linear(encoder, train_loader, val_loader, opt):
 
     classifier = nn.Linear(eval_numel, 10).to(opt.gpus[0])
 
-    optim = torch.optim.Adam(classifier.parameters(), lr=opt.lin_lr, betas=(0.5, 0.999))
-    scheduler = torch.optim.lr_scheduler.MultiStepLR(optim, gamma=opt.lin_lr_decay_rate,
+    optimizer = torch.optim.Adam(classifier.parameters(), lr=opt.lin_lr, betas=(0.5, 0.999))
+    scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, gamma=opt.lin_lr_decay_rate,
                                                      milestones=opt.lin_lr_decay_epochs)
 
     loss_meter = AverageMeter('loss')
@@ -144,14 +144,14 @@ def train_linear(encoder, train_loader, val_loader, opt):
         it_time_meter.reset()
         t0 = time.time()
         for ii, (images, labels) in enumerate(train_loader):
-            optim.zero_grad()
+            optimizer.zero_grad()
             with torch.no_grad():
                 feats = encoder(images.to(opt.gpus[0]), layer_index=opt.lin_layer_index).flatten(1)
             logits = classifier(feats)
             loss = F.cross_entropy(logits, labels.to(opt.gpus[0]))
             loss_meter.update(loss, images.shape[0])
             loss.backward()
-            optim.step()
+            optimizer.step()
             it_time_meter.update(time.time() - t0)
             if ii % opt.lin_log_interval == 0:
                 print(f"Epoch {epoch}/{opt.lin_epochs}\tIt {ii}/{len(train_loader)}\t{loss_meter}\t{it_time_meter}")
