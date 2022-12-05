@@ -16,9 +16,8 @@ from linear_eval import train_linear
 def parse_option():
     parser = argparse.ArgumentParser('STL-10 Representation Learning with Alignment and Uniformity Losses')
 
-    parser.add_argument('--align_w', type=float, default=1.0, help='Alignment loss initial weight')
-    parser.add_argument('--unif_w', type=float, default=1.0, help='Uniformity loss initial weight')
-    parser.add_argument('--align_eps', type=float, default=0.4, help='Alignment Loss Epsilon')
+    parser.add_argument('--align_w', type=float, default=0.98, help='Alignment loss initial weight')
+    parser.add_argument('--unif_w', type=float, default=0.96, help='Uniformity loss initial weight')
     parser.add_argument('--align_alpha', type=float, default=2, help='alpha in alignment loss')
     parser.add_argument('--unif_t', type=float, default=2, help='t in uniformity loss')
 
@@ -26,7 +25,6 @@ def parse_option():
     parser.add_argument('--epochs', type=int, default=200, help='Number of training epochs')
     parser.add_argument('--lr', type=float, default=None,
                         help='Learning rate. Default is linear scaling 0.12 per 256 batch size')
-    parser.add_argument('--lr_dual', type=float, default=0.2, help='Dual Learning rate')
     parser.add_argument('--lr_decay_rate', type=float, default=0.1, help='Learning rate decay rate')
     parser.add_argument('--lr_decay_epochs', default=[155, 170, 185], nargs='*', type=int,
                         help='When to decay learning rate')
@@ -145,8 +143,6 @@ def main():
     unif_meter = AverageMeter('uniform_loss')
     loss_meter = AverageMeter('total_loss')
     it_time_meter = AverageMeter('iter_time')
-
-    dual_var = opt.align_w/opt.unif_w
     for epoch in range(opt.epochs):
         align_meter.reset()
         unif_meter.reset()
@@ -158,7 +154,7 @@ def main():
             x, y = encoder(torch.cat([im_x.to(opt.gpus[0]), im_y.to(opt.gpus[0])])).chunk(2)
             align_loss_val = align_loss(x, y, alpha=opt.align_alpha)
             unif_loss_val = (uniform_loss(x, t=opt.unif_t) + uniform_loss(y, t=opt.unif_t)) / 2
-            loss = align_loss_val * dual_var + unif_loss_val
+            loss = align_loss_val * pt.align_w + unif_loss_val * opt.unif_w
             align_meter.update(align_loss_val, x.shape[0])
             unif_meter.update(unif_loss_val)
             loss_meter.update(loss, x.shape[0])
@@ -172,25 +168,13 @@ def main():
                     wandb.log({"epoch":epoch, "align_loss": align_meter.avg, "uniform_loss":unif_meter.avg})
             t0 = time.time()
         scheduler.step()
-        with torch.no_grad():
-            align_meter.reset()
-            encoder.eval()
-            for ii, (im_x, im_y) in enumerate(loader):
-                x, y = encoder(torch.cat([im_x.to(opt.gpus[0]), im_y.to(opt.gpus[0])])).chunk(2)
-                align_loss_val = align_loss(x, y, alpha=opt.align_alpha)
-                align_meter.update(align_loss_val, x.shape[0])
-            slack = align_meter.avg - opt.align_eps
-            dual_var = max(0,dual_var + slack)
-            print(f"dual var {dual_var}, slack {slack}")
-            if opt.wandb_log:
-                wandb.log({"epoch":epoch, "dual_var": dual_var, "slack":slack})
         if epoch % opt.lin_eval_interval == 0 and epoch>0:
             t_val = time.time()
             model_eval = deepcopy(model).eval()
             val_acc = train_linear(model_eval, lin_train_loader, lin_val_loader, opt)
             print(f"val acc {val_acc}, time: {time.time()-t_val}")
             wandb.log({"epoch":epoch, "val acc":val_acc})
-        encoder.train()
+            encoder.train()
     ckpt_file = os.path.join(opt.save_folder, 'encoder.pth')
     torch.save(encoder.module.state_dict(), ckpt_file)
     print(f'Saved to {ckpt_file}')
@@ -198,7 +182,6 @@ def main():
     val_acc = train_linear(model, lin_train_loader, lin_val_loader, opt)
     print(f"final val acc {val_acc}")
     wandb.log({"final val acc":val_acc})
-
 
 if __name__ == '__main__':
     main()
