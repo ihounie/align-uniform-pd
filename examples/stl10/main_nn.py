@@ -8,16 +8,17 @@ import torch.nn as nn
 import wandb
 from copy import deepcopy
 
-from util import AverageMeter, TwoAugUnsupervisedDataset
+from util import AverageMeter, CleanTwoAugUnsupervisedDataset
 from encoder import SmallAlexNet
-from align_uniform import align_loss, uniform_loss
+from align_uniform import koza_leon, align_loss
 from linear_eval import train_linear
 
 def parse_option():
     parser = argparse.ArgumentParser('STL-10 Representation Learning with Alignment and Uniformity Losses')
 
-    parser.add_argument('--align_w', type=float, default=0.98, help='Alignment loss initial weight')
-    parser.add_argument('--unif_w', type=float, default=0.96, help='Uniformity loss initial weight')
+    parser.add_argument('--align_w', type=float, default=0.1, help='Alignment loss initial weight')
+    parser.add_argument('--unif_w', type=float, default=1, help='Uniformity loss initial weight')
+    parser.add_argument('--align_eps', type=float, default=0.4, help='Alignment Loss Epsilon')
     parser.add_argument('--align_alpha', type=float, default=2, help='alpha in alignment loss')
     parser.add_argument('--unif_t', type=float, default=2, help='t in uniformity loss')
 
@@ -25,24 +26,28 @@ def parse_option():
     parser.add_argument('--epochs', type=int, default=200, help='Number of training epochs')
     parser.add_argument('--lr', type=float, default=None,
                         help='Learning rate. Default is linear scaling 0.12 per 256 batch size')
+    parser.add_argument('--lr_dual', type=float, default=0.2, help='Dual Learning rate')
     parser.add_argument('--lr_decay_rate', type=float, default=0.1, help='Learning rate decay rate')
     parser.add_argument('--lr_decay_epochs', default=[155, 170, 185], nargs='*', type=int,
                         help='When to decay learning rate')
     parser.add_argument('--momentum', type=float, default=0.9, help='SGD momentum')
     parser.add_argument('--weight_decay', type=float, default=1e-4, help='L2 weight decay')
+    parser.add_argument('--grad_clip', type=float, default=1.0, help='Gradient Clipping')
     parser.add_argument('--feat_dim', type=int, default=128, help='Feature dimensionality')
 
     parser.add_argument('--num_workers', type=int, default=20, help='Number of data loader workers to use')
     parser.add_argument('--log_interval', type=int, default=40, help='Number of iterations between logs')
     parser.add_argument('--gpus', default=[0], nargs='*', type=int,
                         help='List of GPU indices to use, e.g., --gpus 0 1 2 3')
+    parser.add_argument('--knn', default=100, type=int,
+                        help='Number of Neighbours for KL')                
 
     parser.add_argument('--data_folder', type=str, default='./data', help='Path to data')
     parser.add_argument('--result_folder', type=str, default='./results', help='Base directory to save model')
 
     parser.add_argument('--wandb_log',  action='store_true')
     parser.add_argument('--project',  default='Uniformity', type=str, help='wandb Project name')
-    parser.add_argument('--run',  default='PD', type=str, help='wandb Run name')
+    parser.add_argument('--run',  default='PD-koza-aug', type=str, help='wandb Run name')
     
     parser.add_argument('--lin_layer_index', type=int, default=-2, help='Evaluation layer')
 
@@ -86,8 +91,16 @@ def get_data_loader(opt):
             (0.26826768628079806, 0.2610450402318512, 0.26866836876860795),
         ),
     ])
-    dataset = TwoAugUnsupervisedDataset(
-        torchvision.datasets.STL10(opt.data_folder, 'train+unlabeled', download=True), transform=transform)
+    transform_clean = torchvision.transforms.Compose([torchvision.transforms.Resize(70),
+        torchvision.transforms.CenterCrop(64),
+        torchvision.transforms.ToTensor(),
+        torchvision.transforms.Normalize(
+            (0.44087801806139126, 0.42790631331699347, 0.3867879370752931),
+            (0.26826768628079806, 0.2610450402318512, 0.26866836876860795),
+        ),
+    ])
+    dataset = CleanTwoAugUnsupervisedDataset(
+        torchvision.datasets.STL10(opt.data_folder, 'train+unlabeled', download=True), transform=transform, transform_clean=transform_clean)
     return torch.utils.data.DataLoader(dataset, batch_size=opt.batch_size, num_workers=opt.num_workers,
                                        shuffle=True, pin_memory=True)
 
@@ -140,25 +153,29 @@ def main():
     lin_train_loader, lin_val_loader = lin_get_data_loaders(opt)
 
     align_meter = AverageMeter('align_loss')
-    unif_meter = AverageMeter('uniform_loss')
+    unif_meter = AverageMeter('kl_ent_loss')
     loss_meter = AverageMeter('total_loss')
     it_time_meter = AverageMeter('iter_time')
+
+    dual_var = opt.align_w/opt.unif_w
     for epoch in range(opt.epochs):
         align_meter.reset()
         unif_meter.reset()
         loss_meter.reset()
         it_time_meter.reset()
         t0 = time.time()
-        for ii, (im_x, im_y) in enumerate(loader):
+        for ii, (im_clean, im_aug1, im_aug2) in enumerate(loader):
             optim.zero_grad()
-            x, y = encoder(torch.cat([im_x.to(opt.gpus[0]), im_y.to(opt.gpus[0])])).chunk(2)
-            align_loss_val = align_loss(x, y, alpha=opt.align_alpha)
-            unif_loss_val = (uniform_loss(x, t=opt.unif_t) + uniform_loss(y, t=opt.unif_t)) / 2
-            loss = align_loss_val * opt.align_w + unif_loss_val * opt.unif_w
-            align_meter.update(align_loss_val, x.shape[0])
-            unif_meter.update(unif_loss_val)
-            loss_meter.update(loss, x.shape[0])
+            aug_1, aug_2 = encoder(torch.cat([im_aug1.to(opt.gpus[0]), im_aug2.to(opt.gpus[0])])).chunk(2)
+            align_loss_val = align_loss(aug_1, aug_2, alpha=opt.align_alpha)
+            clean = encoder(im_clean.to(opt.gpus[0]))
+            unif_loss_val = (koza_leon(clean, k = opt.knn) + koza_leon(aug_1, k = opt.knn)+koza_leon(aug_2, k = opt.knn))/3
+            loss =  unif_loss_val + align_loss_val * dual_var
+            align_meter.update(align_loss_val, clean.shape[0])
+            unif_meter.update(unif_loss_val, clean.shape[0])
+            loss_meter.update(loss, clean.shape[0])
             loss.backward()
+            torch.nn.utils.clip_grad_norm_(encoder.parameters(), opt.grad_clip, norm_type=2.0, error_if_nonfinite=False)
             optim.step()
             it_time_meter.update(time.time() - t0)
             if ii % opt.log_interval == 0:
@@ -168,20 +185,33 @@ def main():
                     wandb.log({"epoch":epoch, "align_loss": align_meter.avg, "uniform_loss":unif_meter.avg})
             t0 = time.time()
         scheduler.step()
-        if epoch % opt.lin_eval_interval == 0 and epoch>0:
+        with torch.no_grad():
+            align_meter.reset()
+            encoder.eval()
+            for ii, (_, im_x, im_y) in enumerate(loader):
+                x, y = encoder(torch.cat([im_x.to(opt.gpus[0]), im_y.to(opt.gpus[0])])).chunk(2)
+                align_loss_val = align_loss(x, y, alpha=opt.align_alpha)
+                align_meter.update(align_loss_val, x.shape[0])
+            slack = align_meter.avg - opt.align_eps
+            dual_var = max(0,dual_var + slack)
+            print(f"dual var {dual_var}, slack {slack}")
+            if opt.wandb_log:
+                wandb.log({"epoch":epoch, "dual_var": dual_var, "slack":slack})
+        if epoch % opt.lin_eval_interval == 0 and epoch > 0:
             t_val = time.time()
-            model_eval = deepcopy(model).eval()
+            model_eval = deepcopy(encoder.module).eval()
             val_acc = train_linear(model_eval, lin_train_loader, lin_val_loader, opt)
             print(f"val acc {val_acc}, time: {time.time()-t_val}")
             wandb.log({"epoch":epoch, "val acc":val_acc})
-            encoder.train()
+        encoder.train()
     ckpt_file = os.path.join(opt.save_folder, 'encoder.pth')
     torch.save(encoder.module.state_dict(), ckpt_file)
     print(f'Saved to {ckpt_file}')
     model.eval()
     val_acc = train_linear(model, lin_train_loader, lin_val_loader, opt)
-    print(f"final val acc {val_acc}")
+    print(f"final val acc {val_acc}, time: {time.time()-t_val}")
     wandb.log({"final val acc":val_acc})
+
 
 if __name__ == '__main__':
     main()
