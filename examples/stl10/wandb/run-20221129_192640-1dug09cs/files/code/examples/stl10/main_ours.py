@@ -16,8 +16,8 @@ from linear_eval import train_linear
 def parse_option():
     parser = argparse.ArgumentParser('STL-10 Representation Learning with Alignment and Uniformity Losses')
 
-    parser.add_argument('--align_w', type=float, default=0.1, help='Alignment loss initial weight')
-    parser.add_argument('--unif_w', type=float, default=1, help='Uniformity loss initial weight')
+    parser.add_argument('--align_w', type=float, default=0.98, help='Alignment loss initial weight')
+    parser.add_argument('--unif_w', type=float, default=0.96, help='Uniformity loss initial weight')
     parser.add_argument('--align_eps', type=float, default=0.4, help='Alignment Loss Epsilon')
     parser.add_argument('--align_alpha', type=float, default=2, help='alpha in alignment loss')
     parser.add_argument('--unif_t', type=float, default=2, help='t in uniformity loss')
@@ -57,7 +57,7 @@ def parse_option():
 
     parser.add_argument('--lin_num_workers', type=int, default=6, help='Number of data loader workers to use')
     parser.add_argument('--lin_log_interval', type=int, default=40, help='Number of iterations between logs')
-    parser.add_argument('--lin_eval_interval', type=int, default=400, help='Number of epochs between linear evaluations')
+    parser.add_argument('--lin_eval_interval', type=int, default=40, help='Number of epochs between linear evaluations')
     opt = parser.parse_args()
 
     if opt.lr is None:
@@ -164,9 +164,8 @@ def main():
         t0 = time.time()
         for ii, (im_clean, im_aug1, im_aug2) in enumerate(loader):
             optim.zero_grad()
-            aug_1, aug_2 = encoder(torch.cat([im_aug1.to(opt.gpus[0]), im_aug2.to(opt.gpus[0])])).chunk(2)
+            clean, aug_1, aug_2 = encoder(torch.cat([im_clean.to(opt.gpus[0]), im_aug1.to(opt.gpus[0]), im_aug2.to(opt.gpus[0])])).chunk(3)
             align_loss_val = align_loss(aug_1, aug_2, alpha=opt.align_alpha)
-            clean = encoder(im_clean.to(opt.gpus[0]))
             unif_loss_val = koza_leon(clean)
             loss =  unif_loss_val + align_loss_val * dual_var
             align_meter.update(align_loss_val, clean.shape[0])
@@ -195,13 +194,13 @@ def main():
             print(f"dual var {dual_var}, slack {slack}")
             if opt.wandb_log:
                 wandb.log({"epoch":epoch, "dual_var": dual_var, "slack":slack})
-        if epoch % opt.lin_eval_interval == 0 and epoch > 0:
+        if epoch % opt.lin_eval_interval == 0:
             t_val = time.time()
-            model_eval = deepcopy(encoder.module).eval()
+            model_eval = deepcopy(model).eval()
             val_acc = train_linear(model_eval, lin_train_loader, lin_val_loader, opt)
             print(f"val acc {val_acc}, time: {time.time()-t_val}")
             wandb.log({"epoch":epoch, "val acc":val_acc})
-        encoder.train()
+            encoder.train()
     ckpt_file = os.path.join(opt.save_folder, 'encoder.pth')
     torch.save(encoder.module.state_dict(), ckpt_file)
     print(f'Saved to {ckpt_file}')
