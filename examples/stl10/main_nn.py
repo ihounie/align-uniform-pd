@@ -8,7 +8,7 @@ import torch.nn as nn
 import wandb
 from copy import deepcopy
 
-from util import AverageMeter, CleanTwoAugUnsupervisedDataset
+from util import AverageMeter, TwoAugUnsupervisedDataset
 from encoder import SmallAlexNet
 from align_uniform import koza_leon, align_loss
 from linear_eval import train_linear
@@ -39,7 +39,7 @@ def parse_option():
     parser.add_argument('--log_interval', type=int, default=40, help='Number of iterations between logs')
     parser.add_argument('--gpus', default=[0], nargs='*', type=int,
                         help='List of GPU indices to use, e.g., --gpus 0 1 2 3')
-    parser.add_argument('--knn', default=100, type=int,
+    parser.add_argument('--knn', default=364, type=int,
                         help='Number of Neighbours for KL')                
 
     parser.add_argument('--data_folder', type=str, default='./data', help='Path to data')
@@ -91,6 +91,7 @@ def get_data_loader(opt):
             (0.26826768628079806, 0.2610450402318512, 0.26866836876860795),
         ),
     ])
+    '''
     transform_clean = torchvision.transforms.Compose([torchvision.transforms.Resize(70),
         torchvision.transforms.CenterCrop(64),
         torchvision.transforms.ToTensor(),
@@ -99,8 +100,9 @@ def get_data_loader(opt):
             (0.26826768628079806, 0.2610450402318512, 0.26866836876860795),
         ),
     ])
-    dataset = CleanTwoAugUnsupervisedDataset(
-        torchvision.datasets.STL10(opt.data_folder, 'train+unlabeled', download=True), transform=transform, transform_clean=transform_clean)
+    '''
+    dataset = TwoAugUnsupervisedDataset(#Prepend clean if using clean samples
+        torchvision.datasets.STL10(opt.data_folder, 'train+unlabeled', download=True), transform=transform)#, transform_clean=transform_clean)
     return torch.utils.data.DataLoader(dataset, batch_size=opt.batch_size, num_workers=opt.num_workers,
                                        shuffle=True, pin_memory=True)
 
@@ -164,16 +166,17 @@ def main():
         loss_meter.reset()
         it_time_meter.reset()
         t0 = time.time()
-        for ii, (im_clean, im_aug1, im_aug2) in enumerate(loader):
+        for ii, (im_aug1, im_aug2) in enumerate(loader):
             optim.zero_grad()
+            b_size = im_aug1.shape[0]
             aug_1, aug_2 = encoder(torch.cat([im_aug1.to(opt.gpus[0]), im_aug2.to(opt.gpus[0])])).chunk(2)
             align_loss_val = align_loss(aug_1, aug_2, alpha=opt.align_alpha)
-            clean = encoder(im_clean.to(opt.gpus[0]))
-            unif_loss_val = (koza_leon(clean, k = opt.knn) + koza_leon(aug_1, k = opt.knn)+koza_leon(aug_2, k = opt.knn))/3
+            #clean = encoder(im_clean.to(opt.gpus[0]))
+            unif_loss_val = koza_leon(aug_1, k = opt.knn)+koza_leon(aug_2, k = opt.knn)/2
             loss =  unif_loss_val + align_loss_val * dual_var
-            align_meter.update(align_loss_val, clean.shape[0])
-            unif_meter.update(unif_loss_val, clean.shape[0])
-            loss_meter.update(loss, clean.shape[0])
+            align_meter.update(align_loss_val, b_size)
+            unif_meter.update(unif_loss_val, b_size)
+            loss_meter.update(loss, b_size)
             loss.backward()
             torch.nn.utils.clip_grad_norm_(encoder.parameters(), opt.grad_clip, norm_type=2.0, error_if_nonfinite=False)
             optim.step()
@@ -188,7 +191,7 @@ def main():
         with torch.no_grad():
             align_meter.reset()
             encoder.eval()
-            for ii, (_, im_x, im_y) in enumerate(loader):
+            for ii, (im_x, im_y) in enumerate(loader):
                 x, y = encoder(torch.cat([im_x.to(opt.gpus[0]), im_y.to(opt.gpus[0])])).chunk(2)
                 align_loss_val = align_loss(x, y, alpha=opt.align_alpha)
                 align_meter.update(align_loss_val, x.shape[0])
@@ -209,7 +212,7 @@ def main():
     print(f'Saved to {ckpt_file}')
     model.eval()
     val_acc = train_linear(model, lin_train_loader, lin_val_loader, opt)
-    print(f"final val acc {val_acc}, time: {time.time()-t_val}")
+    print(f"final val acc {val_acc}")
     wandb.log({"final val acc":val_acc})
 
 
