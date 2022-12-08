@@ -12,10 +12,12 @@ from util import AverageMeter, TwoAugUnsupervisedDataset
 from encoder import SmallAlexNet
 from align_uniform import koza_leon, align_loss
 from linear_eval import train_linear
+from utils import seed_everything
 
 def parse_option():
     parser = argparse.ArgumentParser('STL-10 Representation Learning with Alignment and Uniformity Losses')
 
+    parser.add_argument('--seed', type=int, default=0, help='Seed')
     parser.add_argument('--align_w', type=float, default=0.1, help='Alignment loss initial weight')
     parser.add_argument('--unif_w', type=float, default=1, help='Uniformity loss initial weight')
     parser.add_argument('--align_eps', type=float, default=0.4, help='Alignment Loss Epsilon')
@@ -210,11 +212,15 @@ def main():
     ckpt_file = os.path.join(opt.save_folder, 'encoder.pth')
     torch.save(encoder.module.state_dict(), ckpt_file)
     print(f'Saved to {ckpt_file}')
+    if wandb_log:
+        wandb.save(ckpt_file, policy = 'now')
     model.eval()
     val_acc = train_linear(model, lin_train_loader, lin_val_loader, opt)
     print(f"final val acc {val_acc}")
-    wandb.log({"final val acc":val_acc})
+    if wandb_log:
+        wandb.log({"final val acc":val_acc})
 
 
 if __name__ == '__main__':
+    seed_everything(opt.seed)
     main()
