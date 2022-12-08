@@ -20,6 +20,9 @@ def parse_option():
     parser.add_argument('--unif_w', type=float, default=0.96, help='Uniformity loss initial weight')
     parser.add_argument('--align_alpha', type=float, default=2, help='alpha in alignment loss')
     parser.add_argument('--unif_t', type=float, default=2, help='t in uniformity loss')
+    parser.add_argument('--knn', default=364, type=int, help='Number of Neighbours')  
+
+    parser.add_argument('--knn_mode', type=str, help='either only_k mean_k or all(default)')
 
     parser.add_argument('--batch_size', type=int, default=768, help='Batch size')
     parser.add_argument('--epochs', type=int, default=200, help='Number of training epochs')
@@ -153,7 +156,7 @@ def main():
             optim.zero_grad()
             x, y = encoder(torch.cat([im_x.to(opt.gpus[0]), im_y.to(opt.gpus[0])])).chunk(2)
             align_loss_val = align_loss(x, y, alpha=opt.align_alpha)
-            unif_loss_val = (uniform_loss(x, t=opt.unif_t) + uniform_loss(y, t=opt.unif_t)) / 2
+            unif_loss_val = (uniform_loss(x, t=opt.unif_t, mode = opt.knn_mode, k = opt.knn) + uniform_loss(y, t=opt.unif_t, mode = opt.knn_mode, k = opt.knn)) / 2
             loss = align_loss_val * opt.align_w + unif_loss_val * opt.unif_w
             align_meter.update(align_loss_val, x.shape[0])
             unif_meter.update(unif_loss_val)
@@ -178,10 +181,13 @@ def main():
     ckpt_file = os.path.join(opt.save_folder, 'encoder.pth')
     torch.save(encoder.module.state_dict(), ckpt_file)
     print(f'Saved to {ckpt_file}')
+    if wandb_log:
+        wandb.save(ckpt_file, policy = 'now')
     model.eval()
     val_acc = train_linear(model, lin_train_loader, lin_val_loader, opt)
     print(f"final val acc {val_acc}")
-    wandb.log({"final val acc":val_acc})
+    if wandb_log:
+        wandb.log({"final val acc":val_acc})
 
 if __name__ == '__main__':
     main()
