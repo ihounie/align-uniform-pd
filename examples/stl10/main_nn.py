@@ -138,7 +138,7 @@ def lin_get_data_loaders(opt):
 
 def main():
     opt = parse_option()
-
+    seed_everything(opt.seed)
     print(f'Optimize: {opt.align_w:g} * loss_align(alpha={opt.align_alpha:g}) + {opt.unif_w:g} * loss_uniform(t={opt.unif_t:g})')
 
     torch.cuda.set_device(opt.gpus[0])
@@ -222,5 +222,4 @@ def main():
 
 
 if __name__ == '__main__':
-    seed_everything(opt.seed)
     main()
