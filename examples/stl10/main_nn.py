@@ -12,7 +12,7 @@ from util import AverageMeter, TwoAugUnsupervisedDataset
 from encoder import SmallAlexNet
 from align_uniform import koza_leon, align_loss
 from linear_eval import train_linear
-from utils import seed_everything
+from util import seed_everything
 
 def parse_option():
     parser = argparse.ArgumentParser('STL-10 Representation Learning with Alignment and Uniformity Losses')
