@@ -206,12 +206,12 @@ def main():
     ckpt_file = os.path.join(opt.save_folder, 'encoder.pth')
     torch.save(encoder.module.state_dict(), ckpt_file)
     print(f'Saved to {ckpt_file}')
-    if wandb_log:
+    if opt.wandb_log:
         wandb.save(ckpt_file, policy = 'now')
     model.eval()
     val_acc = train_linear(model, lin_train_loader, lin_val_loader, opt)
     print(f"final val acc {val_acc}")
-    if wandb_log:
+    if opt.wandb_log:
         wandb.log({"final val acc":val_acc})
 
 
