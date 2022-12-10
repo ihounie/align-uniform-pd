@@ -12,10 +12,11 @@ from util import AverageMeter, TwoAugUnsupervisedDataset
 from encoder import SmallAlexNet
 from align_uniform import align_loss, uniform_loss
 from linear_eval import train_linear
+from util import seed_everything
 
 def parse_option():
     parser = argparse.ArgumentParser('STL-10 Representation Learning with Alignment and Uniformity Losses')
-
+    parser.add_argument('--seed', type=int, default=0, help='Seed')
     parser.add_argument('--align_w', type=float, default=1.0, help='Alignment loss initial weight')
     parser.add_argument('--unif_w', type=float, default=1.0, help='Uniformity loss initial weight')
     parser.add_argument('--align_eps', type=float, default=0.4, help='Alignment Loss Epsilon')
@@ -125,7 +126,7 @@ def main():
     opt = parse_option()
 
     print(f'Optimize: {opt.align_w:g} * loss_align(alpha={opt.align_alpha:g}) + {opt.unif_w:g} * loss_uniform(t={opt.unif_t:g})')
-
+    seed_everything(opt.seed)
     torch.cuda.set_device(opt.gpus[0])
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = True
@@ -197,7 +198,10 @@ def main():
     model.eval()
     val_acc = train_linear(model, lin_train_loader, lin_val_loader, opt)
     print(f"final val acc {val_acc}")
-    wandb.log({"final val acc":val_acc})
+    if opt.wandb_log:
+        wandb.log({"final val acc":val_acc})
+    if opt.wandb_log:
+        wandb.save(ckpt_file, policy = 'now')
 
 
 if __name__ == '__main__':
