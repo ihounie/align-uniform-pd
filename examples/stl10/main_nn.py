@@ -37,7 +37,7 @@ def parse_option():
     parser.add_argument('--grad_clip', type=float, default=1.0, help='Gradient Clipping')
     parser.add_argument('--feat_dim', type=int, default=128, help='Feature dimensionality')
 
-    parser.add_argument('--num_workers', type=int, default=20, help='Number of data loader workers to use')
+    parser.add_argument('--num_workers', type=int, default=10, help='Number of data loader workers to use')
     parser.add_argument('--log_interval', type=int, default=40, help='Number of iterations between logs')
     parser.add_argument('--gpus', default=[0], nargs='*', type=int,
                         help='List of GPU indices to use, e.g., --gpus 0 1 2 3')
@@ -58,7 +58,7 @@ def parse_option():
     parser.add_argument('--lin_lr', type=float, default=1e-3, help='Learning rate')
     parser.add_argument('--lin_lr_decay_rate', type=float, default=0.2, help='Learning rate decay rate')
     parser.add_argument('--lin_lr_decay_epochs', type=str, default='60,80', help='When to decay learning rate')
-
+ 
     parser.add_argument('--lin_num_workers', type=int, default=6, help='Number of data loader workers to use')
     parser.add_argument('--lin_log_interval', type=int, default=40, help='Number of iterations between logs')
     parser.add_argument('--lin_eval_interval', type=int, default=400, help='Number of epochs between linear evaluations')
@@ -93,16 +93,6 @@ def get_data_loader(opt):
             (0.26826768628079806, 0.2610450402318512, 0.26866836876860795),
         ),
     ])
-    '''
-    transform_clean = torchvision.transforms.Compose([torchvision.transforms.Resize(70),
-        torchvision.transforms.CenterCrop(64),
-        torchvision.transforms.ToTensor(),
-        torchvision.transforms.Normalize(
-            (0.44087801806139126, 0.42790631331699347, 0.3867879370752931),
-            (0.26826768628079806, 0.2610450402318512, 0.26866836876860795),
-        ),
-    ])
-    '''
     dataset = TwoAugUnsupervisedDataset(#Prepend clean if using clean samples
         torchvision.datasets.STL10(opt.data_folder, 'train+unlabeled', download=True), transform=transform)#, transform_clean=transform_clean)
     return torch.utils.data.DataLoader(dataset, batch_size=opt.batch_size, num_workers=opt.num_workers,
@@ -212,12 +202,12 @@ def main():
     ckpt_file = os.path.join(opt.save_folder, 'encoder.pth')
     torch.save(encoder.module.state_dict(), ckpt_file)
     print(f'Saved to {ckpt_file}')
-    if wandb_log:
+    if opt.wandb_log:
         wandb.save(ckpt_file, policy = 'now')
     model.eval()
     val_acc = train_linear(model, lin_train_loader, lin_val_loader, opt)
     print(f"final val acc {val_acc}")
-    if wandb_log:
+    if opt.wandb_log:
         wandb.log({"final val acc":val_acc})
 
 
