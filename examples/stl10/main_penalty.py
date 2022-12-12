@@ -116,8 +116,8 @@ def lin_get_data_loaders(opt):
         torchvision.transforms.RandomHorizontalFlip(),
         torchvision.transforms.ToTensor(),
         torchvision.transforms.Normalize(
-            (0.44087801806139126, 0.42790631331699347, 0.3867879370752931),
-            (0.26826768628079806, 0.2610450402318512, 0.26866836876860795),
+            means[opt.dataset],
+            stds[opt.dataset],
         ),
     ])
     val_transform = torchvision.transforms.Compose([
