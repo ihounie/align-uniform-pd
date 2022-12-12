@@ -130,13 +130,12 @@ def lin_get_data_loaders(opt):
         ),
     ])
     if opt.dataset =="STL-10":
-        torch_dset_train = torchvision.datasets.STL10(opt.data_folder, 'train', download=True)
-        torch_dset_test = torchvision.datasets.STL10(opt.data_folder, 'train', download=True)
+        torch_dset_train = torchvision.datasets.STL10(opt.data_folder, 'train', download=True, transform=train_transform)
+        torch_dset_test = torchvision.datasets.STL10(opt.data_folder, 'test', download=True, transform=val_transform)
     elif opt.dataset=="CIFAR-10":
-        torch_dset_train = torchvision.datasets.CIFAR10(opt.data_folder, 'test', download=True)
-        torch_dset_test = torchvision.datasets.CIFAR10(opt.data_folder, 'test', download=True)
-    #train_dataset = torchvision.datasets.STL10(opt.data_folder, 'train', download=True, transform=train_transform)
-    #val_dataset = torchvision.datasets.STL10(opt.data_folder, 'test', transform=val_transform)
+        torch_dset_train = torchvision.datasets.CIFAR10(opt.data_folder, 'train', download=True, transform=train_transform)
+        torch_dset_test = torchvision.datasets.CIFAR10(opt.data_folder, 'test', download=True, transform=val_transform)
+
     train_loader = torch.utils.data.DataLoader(torch_dset_train, batch_size=opt.lin_batch_size,
                                                num_workers=opt.lin_num_workers, shuffle=True, pin_memory=True)
     val_loader = torch.utils.data.DataLoader(torch_dset_test, batch_size=opt.lin_batch_size,
