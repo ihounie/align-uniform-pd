@@ -3,16 +3,21 @@ Adapted from https://github.com/HobbitLong/CMC/blob/f25c37e49196a1fe7dc5f7b559ed
 """
 
 import torch.nn as nn
+from math import floor
 
 
 class L2Norm(nn.Module):
     def forward(self, x):
         return x / x.norm(p=2, dim=1, keepdim=True)
 
-
+def get_output_size(in_size, padding, kernel, stride):
+    return floor((in_size+2*padding-kernel)/stride+1)
+    
 class SmallAlexNet(nn.Module):
-    def __init__(self, in_channel=3, feat_dim=128):
+    def __init__(self, in_channel=3, feat_dim=128, in_size=64):
         super(SmallAlexNet, self).__init__()
+
+        conv_dim = in_size
 
         blocks = []
 
@@ -23,7 +28,8 @@ class SmallAlexNet(nn.Module):
             nn.ReLU(inplace=True),
             nn.MaxPool2d(3, 2),
         ))
-
+        conv_dim = get_output_size(conv_dim, 1, 3, 1)
+        conv_dim = get_output_size(conv_dim, 0, 3, 2)
         # conv_block_2
         blocks.append(nn.Sequential(
             nn.Conv2d(96, 192, kernel_size=3, padding=1, bias=False),
@@ -31,20 +37,22 @@ class SmallAlexNet(nn.Module):
             nn.ReLU(inplace=True),
             nn.MaxPool2d(3, 2),
         ))
-
+        conv_dim = get_output_size(conv_dim, 1, 3, 1)
+        conv_dim = get_output_size(conv_dim, 0, 3, 2)
         # conv_block_3
         blocks.append(nn.Sequential(
             nn.Conv2d(192, 384, kernel_size=3, padding=1, bias=False),
             nn.BatchNorm2d(384),
             nn.ReLU(inplace=True),
         ))
-
+        conv_dim = get_output_size(conv_dim, 1, 3, 1)
         # conv_block_4
         blocks.append(nn.Sequential(
             nn.Conv2d(384, 384, kernel_size=3, padding=1, bias=False),
             nn.BatchNorm2d(384),
             nn.ReLU(inplace=True),
         ))
+        conv_dim = get_output_size(conv_dim, 1, 3, 1)
 
         # conv_block_5
         blocks.append(nn.Sequential(
@@ -53,11 +61,13 @@ class SmallAlexNet(nn.Module):
             nn.ReLU(inplace=True),
             nn.MaxPool2d(3, 2),
         ))
-
+        conv_dim = get_output_size(conv_dim, 1, 3, 1)
+        conv_dim = get_output_size(conv_dim, 0, 3, 2)
+        
         # fc6
         blocks.append(nn.Sequential(
             nn.Flatten(),
-            nn.Linear(192 * 7 * 7, 4096, bias=False),  # 256 * 6 * 6 if 224 * 224
+            nn.Linear(192 * conv_dim * conv_dim, 4096, bias=False),  # 256 * 6 * 6 if 224 * 224
             nn.BatchNorm1d(4096),
             nn.ReLU(inplace=True),
         ))
