@@ -15,7 +15,8 @@ from linear_eval import train_linear
 from util import seed_everything
 
 def parse_option():
-    parser = argparse.ArgumentParser('STL-10 Representation Learning with Alignment and Uniformity Losses')
+    parser = argparse.ArgumentParser('Representation Learning with Alignment and Uniformity Losses')
+    parser.add_argument('--dataset', type=str, default="STL-10", help='dataset') 
     parser.add_argument('--seed', type=int, default=0, help='Seed')
     parser.add_argument('--align_w', type=float, default=1.0, help='Alignment loss initial weight')
     parser.add_argument('--unif_w', type=float, default=1.0, help='Uniformity loss initial weight')
@@ -76,48 +77,67 @@ def parse_option():
 
     return opt
 
-
 def get_data_loader(opt):
+    means = {"STL-10": (0.44087801806139126, 0.42790631331699347, 0.3867879370752931),
+             "CIFAR-10":(0.49139968, 0.48215827 ,0.44653124)}
+    stds = {"STL-10":(0.26826768628079806, 0.2610450402318512, 0.26866836876860795),
+             "CIFAR-10": (0.24703233, 0.24348505, 0.26158768)}
+    resize_crop = {"STL-10": 64, "CIFAR-10": 32}
     transform = torchvision.transforms.Compose([
-        torchvision.transforms.RandomResizedCrop(64, scale=(0.08, 1)),
+        torchvision.transforms.RandomResizedCrop(resize_crop[opt.dataset], scale=(0.08, 1)),
         torchvision.transforms.RandomHorizontalFlip(),
         torchvision.transforms.ColorJitter(0.4, 0.4, 0.4, 0.4),
         torchvision.transforms.RandomGrayscale(p=0.2),
         torchvision.transforms.ToTensor(),
         torchvision.transforms.Normalize(
-            (0.44087801806139126, 0.42790631331699347, 0.3867879370752931),
-            (0.26826768628079806, 0.2610450402318512, 0.26866836876860795),
+            means[opt.dataset],
+            stds[opt.dataset],
         ),
     ])
-    dataset = TwoAugUnsupervisedDataset(
-        torchvision.datasets.STL10(opt.data_folder, 'train+unlabeled', download=True), transform=transform)
+    if opt.dataset =="STL-10":
+        torch_dset = torchvision.datasets.STL10(opt.data_folder, 'train+unlabeled', download=True)
+    elif opt.dataset=="CIFAR-10":
+        torch_dset = torchvision.datasets.CIFAR10(opt.data_folder, 'train', download=True)
+
+    dataset = TwoAugUnsupervisedDataset(torch_dset, transform=transform)
     return torch.utils.data.DataLoader(dataset, batch_size=opt.batch_size, num_workers=opt.num_workers,
                                        shuffle=True, pin_memory=True)
 
 def lin_get_data_loaders(opt):
+    means = {"STL-10": (0.44087801806139126, 0.42790631331699347, 0.3867879370752931),
+             "CIFAR-10":(0.49139968, 0.48215827 ,0.44653124)}
+    stds = {"STL-10":(0.26826768628079806, 0.2610450402318512, 0.26866836876860795),
+             "CIFAR-10": (0.24703233, 0.24348505, 0.26158768)}
+    resize_crop = {"STL-10": 64, "CIFAR-10": 32}
     train_transform = torchvision.transforms.Compose([
-        torchvision.transforms.RandomResizedCrop(64, scale=(0.08, 1)),
+        torchvision.transforms.RandomResizedCrop(resize_crop[opt.dataset], scale=(0.08, 1)),
         torchvision.transforms.RandomHorizontalFlip(),
         torchvision.transforms.ToTensor(),
         torchvision.transforms.Normalize(
-            (0.44087801806139126, 0.42790631331699347, 0.3867879370752931),
-            (0.26826768628079806, 0.2610450402318512, 0.26866836876860795),
+            means[opt.dataset],
+            stds[opt.dataset],
         ),
     ])
-    val_transform = torchvision.transforms.Compose([
-        torchvision.transforms.Resize(70),
-        torchvision.transforms.CenterCrop(64),
+    val_transform_list = [
         torchvision.transforms.ToTensor(),
         torchvision.transforms.Normalize(
-            (0.44087801806139126, 0.42790631331699347, 0.3867879370752931),
-            (0.26826768628079806, 0.2610450402318512, 0.26866836876860795),
+            means[opt.dataset],
+            stds[opt.dataset],
         ),
-    ])
-    train_dataset = torchvision.datasets.STL10(opt.data_folder, 'train', download=True, transform=train_transform)
-    val_dataset = torchvision.datasets.STL10(opt.data_folder, 'test', transform=val_transform)
-    train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=opt.lin_batch_size,
+    ]
+    if opt.dataset=="STL-10":
+        val_transform_list = [torchvision.transforms.Resize(70), torchvision.transforms.CenterCrop(64)] + val_transform_list
+    val_transform = torchvision.transforms.Compose(val_transform_list)
+    if opt.dataset =="STL-10":
+        torch_dset_train = torchvision.datasets.STL10(opt.data_folder, 'train', download=True, transform=train_transform)
+        torch_dset_test = torchvision.datasets.STL10(opt.data_folder, 'test', download=True, transform=val_transform)
+    elif opt.dataset=="CIFAR-10":
+        torch_dset_train = torchvision.datasets.CIFAR10(opt.data_folder, 'train', download=True, transform=train_transform)
+        torch_dset_test = torchvision.datasets.CIFAR10(opt.data_folder, 'test', download=True, transform=val_transform)
+
+    train_loader = torch.utils.data.DataLoader(torch_dset_train, batch_size=opt.lin_batch_size,
                                                num_workers=opt.lin_num_workers, shuffle=True, pin_memory=True)
-    val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=opt.lin_batch_size,
+    val_loader = torch.utils.data.DataLoader(torch_dset_test, batch_size=opt.lin_batch_size,
                                              num_workers=opt.lin_num_workers, pin_memory=True)
     return train_loader, val_loader
 
@@ -130,7 +150,7 @@ def main():
     torch.cuda.set_device(opt.gpus[0])
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = True
-    model = SmallAlexNet(feat_dim=opt.feat_dim).to(opt.gpus[0])
+    model = SmallAlexNet(feat_dim=opt.feat_dim, in_size = 32 if opt.dataset=="CIFAR-10" else 64).to(opt.gpus[0])
     encoder = nn.DataParallel(model, opt.gpus)
 
     optim = torch.optim.SGD(encoder.parameters(), lr=opt.lr,
