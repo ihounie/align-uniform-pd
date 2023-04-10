@@ -8,14 +8,16 @@ import torch.nn as nn
 import wandb
 from copy import deepcopy
 
-from util import AverageMeter, CleanTwoAugUnsupervisedDataset
+from util import AverageMeter, TwoAugUnsupervisedDataset
 from encoder import AlexNet
 from align_uniform import koza_leon, align_loss
 from linear_eval import train_linear
 from util import seed_everything
 
 def parse_option():
-    parser = argparse.ArgumentParser('STL-10 Representation Learning with Alignment and Uniformity Losses')
+    parser = argparse.ArgumentParser('Representation Learning with Alignment and Uniformity Losses')
+    parser.add_argument('--dataset', type=str, default="STL-10", help='dataset')
+
     parser.add_argument('--seed', type=int, default=0, help='Seed')
     parser.add_argument('--align_w', type=float, default=0.1, help='Alignment loss initial weight')
     parser.add_argument('--unif_w', type=float, default=1, help='Uniformity loss initial weight')
@@ -35,19 +37,21 @@ def parse_option():
     parser.add_argument('--weight_decay', type=float, default=1e-4, help='L2 weight decay')
     parser.add_argument('--grad_clip', type=float, default=1.0, help='Gradient Clipping')
     parser.add_argument('--feat_dim', type=int, default=128, help='Feature dimensionality')
-    parser.add_argument('--num_layers', type=int, default=5, help='Number of layers')
+    parser.add_argument('--num_layers', type=int, default=5, help='Number of CNN layers')
 
-    parser.add_argument('--num_workers', type=int, default=20, help='Number of data loader workers to use')
+    parser.add_argument('--num_workers', type=int, default=10, help='Number of data loader workers to use')
     parser.add_argument('--log_interval', type=int, default=40, help='Number of iterations between logs')
     parser.add_argument('--gpus', default=[0], nargs='*', type=int,
                         help='List of GPU indices to use, e.g., --gpus 0 1 2 3')
+    parser.add_argument('--knn', default=364, type=int,
+                        help='Number of Neighbours for KL')                
 
     parser.add_argument('--data_folder', type=str, default='./data', help='Path to data')
     parser.add_argument('--result_folder', type=str, default='./results', help='Base directory to save model')
 
     parser.add_argument('--wandb_log',  action='store_true')
-    parser.add_argument('--project',  default='Uniformity-Layers', type=str, help='wandb Project name')
-    parser.add_argument('--run',  default='PD-koza', type=str, help='wandb Run name')
+    parser.add_argument('--project',  default='Uniformity', type=str, help='wandb Project name')
+    parser.add_argument('--run',  default='PD-koza-aug', type=str, help='wandb Run name')
     
     parser.add_argument('--lin_layer_index', type=int, default=-2, help='Evaluation layer')
 
@@ -56,7 +60,7 @@ def parse_option():
     parser.add_argument('--lin_lr', type=float, default=1e-3, help='Learning rate')
     parser.add_argument('--lin_lr_decay_rate', type=float, default=0.2, help='Learning rate decay rate')
     parser.add_argument('--lin_lr_decay_epochs', type=str, default='60,80', help='When to decay learning rate')
-
+ 
     parser.add_argument('--lin_num_workers', type=int, default=6, help='Number of data loader workers to use')
     parser.add_argument('--lin_log_interval', type=int, default=40, help='Number of iterations between logs')
     parser.add_argument('--lin_eval_interval', type=int, default=400, help='Number of epochs between linear evaluations')
@@ -79,57 +83,71 @@ def parse_option():
     return opt
 
 
+
 def get_data_loader(opt):
+    means = {"STL-10": (0.44087801806139126, 0.42790631331699347, 0.3867879370752931),
+             "CIFAR-10":(0.49139968, 0.48215827 ,0.44653124)}
+    stds = {"STL-10":(0.26826768628079806, 0.2610450402318512, 0.26866836876860795),
+             "CIFAR-10": (0.24703233, 0.24348505, 0.26158768)}
+    resize_crop = {"STL-10": 64, "CIFAR-10": 32}
     transform = torchvision.transforms.Compose([
-        torchvision.transforms.RandomResizedCrop(64, scale=(0.08, 1)),
+        torchvision.transforms.RandomResizedCrop(resize_crop[opt.dataset], scale=(0.08, 1)),
         torchvision.transforms.RandomHorizontalFlip(),
         torchvision.transforms.ColorJitter(0.4, 0.4, 0.4, 0.4),
         torchvision.transforms.RandomGrayscale(p=0.2),
         torchvision.transforms.ToTensor(),
         torchvision.transforms.Normalize(
-            (0.44087801806139126, 0.42790631331699347, 0.3867879370752931),
-            (0.26826768628079806, 0.2610450402318512, 0.26866836876860795),
+            means[opt.dataset],
+            stds[opt.dataset],
         ),
     ])
-    transform_clean = torchvision.transforms.Compose([torchvision.transforms.Resize(70),
-        torchvision.transforms.CenterCrop(64),
-        torchvision.transforms.ToTensor(),
-        torchvision.transforms.Normalize(
-            (0.44087801806139126, 0.42790631331699347, 0.3867879370752931),
-            (0.26826768628079806, 0.2610450402318512, 0.26866836876860795),
-        ),
-    ])
-    dataset = CleanTwoAugUnsupervisedDataset(
-        torchvision.datasets.STL10(opt.data_folder, 'train+unlabeled', download=True), transform=transform, transform_clean=transform_clean)
+    if opt.dataset =="STL-10":
+        torch_dset = torchvision.datasets.STL10(opt.data_folder, 'train+unlabeled', download=True)
+    elif opt.dataset=="CIFAR-10":
+        torch_dset = torchvision.datasets.CIFAR10(opt.data_folder, 'train', download=True)
+
+    dataset = TwoAugUnsupervisedDataset(torch_dset, transform=transform)
     return torch.utils.data.DataLoader(dataset, batch_size=opt.batch_size, num_workers=opt.num_workers,
                                        shuffle=True, pin_memory=True)
 
 def lin_get_data_loaders(opt):
+    means = {"STL-10": (0.44087801806139126, 0.42790631331699347, 0.3867879370752931),
+             "CIFAR-10":(0.49139968, 0.48215827 ,0.44653124)}
+    stds = {"STL-10":(0.26826768628079806, 0.2610450402318512, 0.26866836876860795),
+             "CIFAR-10": (0.24703233, 0.24348505, 0.26158768)}
+    resize_crop = {"STL-10": 64, "CIFAR-10": 32}
     train_transform = torchvision.transforms.Compose([
-        torchvision.transforms.RandomResizedCrop(64, scale=(0.08, 1)),
+        torchvision.transforms.RandomResizedCrop(resize_crop[opt.dataset], scale=(0.08, 1)),
         torchvision.transforms.RandomHorizontalFlip(),
         torchvision.transforms.ToTensor(),
         torchvision.transforms.Normalize(
-            (0.44087801806139126, 0.42790631331699347, 0.3867879370752931),
-            (0.26826768628079806, 0.2610450402318512, 0.26866836876860795),
+            means[opt.dataset],
+            stds[opt.dataset],
         ),
     ])
-    val_transform = torchvision.transforms.Compose([
-        torchvision.transforms.Resize(70),
-        torchvision.transforms.CenterCrop(64),
+    val_transform_list = [
         torchvision.transforms.ToTensor(),
         torchvision.transforms.Normalize(
-            (0.44087801806139126, 0.42790631331699347, 0.3867879370752931),
-            (0.26826768628079806, 0.2610450402318512, 0.26866836876860795),
+            means[opt.dataset],
+            stds[opt.dataset],
         ),
-    ])
-    train_dataset = torchvision.datasets.STL10(opt.data_folder, 'train', download=True, transform=train_transform)
-    val_dataset = torchvision.datasets.STL10(opt.data_folder, 'test', transform=val_transform)
-    train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=opt.lin_batch_size,
+    ]
+    if opt.dataset=="STL-10":
+        val_transform_list = [torchvision.transforms.Resize(70), torchvision.transforms.CenterCrop(64)] + val_transform_list
+    val_transform = torchvision.transforms.Compose(val_transform_list)
+    if opt.dataset =="STL-10":
+        torch_dset_train = torchvision.datasets.STL10(opt.data_folder, 'train', download=True, transform=train_transform)
+        torch_dset_test = torchvision.datasets.STL10(opt.data_folder, 'test', download=True, transform=val_transform)
+    elif opt.dataset=="CIFAR-10":
+        torch_dset_train = torchvision.datasets.CIFAR10(opt.data_folder, 'train', download=True, transform=train_transform)
+        torch_dset_test = torchvision.datasets.CIFAR10(opt.data_folder, 'test', download=True, transform=val_transform)
+
+    train_loader = torch.utils.data.DataLoader(torch_dset_train, batch_size=opt.lin_batch_size,
                                                num_workers=opt.lin_num_workers, shuffle=True, pin_memory=True)
-    val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=opt.lin_batch_size,
+    val_loader = torch.utils.data.DataLoader(torch_dset_test, batch_size=opt.lin_batch_size,
                                              num_workers=opt.lin_num_workers, pin_memory=True)
     return train_loader, val_loader
+
 
 
 def main():
@@ -140,7 +158,7 @@ def main():
     torch.cuda.set_device(opt.gpus[0])
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = True
-    model = SmallAlexNet(num_layers = opt.num_layers, feat_dim=opt.feat_dim).to(opt.gpus[0])
+    model = SmallAlexNet(feat_dim=opt.feat_dim, in_size = 32 if opt.dataset=="CIFAR-10" else 64, num_layers=opt.num_layers).to(opt.gpus[0])
     encoder = nn.DataParallel(model, opt.gpus)
 
     optim = torch.optim.SGD(encoder.parameters(), lr=opt.lr,
@@ -164,16 +182,17 @@ def main():
         loss_meter.reset()
         it_time_meter.reset()
         t0 = time.time()
-        for ii, (im_clean, im_aug1, im_aug2) in enumerate(loader):
+        for ii, (im_aug1, im_aug2) in enumerate(loader):
             optim.zero_grad()
+            b_size = im_aug1.shape[0]
             aug_1, aug_2 = encoder(torch.cat([im_aug1.to(opt.gpus[0]), im_aug2.to(opt.gpus[0])])).chunk(2)
             align_loss_val = align_loss(aug_1, aug_2, alpha=opt.align_alpha)
-            clean = encoder(im_clean.to(opt.gpus[0]))
-            unif_loss_val = koza_leon(clean)
+            #clean = encoder(im_clean.to(opt.gpus[0]))
+            unif_loss_val = koza_leon(aug_1, k = opt.knn)+koza_leon(aug_2, k = opt.knn)/2
             loss =  unif_loss_val + align_loss_val * dual_var
-            align_meter.update(align_loss_val, clean.shape[0])
-            unif_meter.update(unif_loss_val, clean.shape[0])
-            loss_meter.update(loss, clean.shape[0])
+            align_meter.update(align_loss_val, b_size)
+            unif_meter.update(unif_loss_val, b_size)
+            loss_meter.update(loss, b_size)
             loss.backward()
             torch.nn.utils.clip_grad_norm_(encoder.parameters(), opt.grad_clip, norm_type=2.0, error_if_nonfinite=False)
             optim.step()
@@ -188,7 +207,7 @@ def main():
         with torch.no_grad():
             align_meter.reset()
             encoder.eval()
-            for ii, (_, im_x, im_y) in enumerate(loader):
+            for ii, (im_x, im_y) in enumerate(loader):
                 x, y = encoder(torch.cat([im_x.to(opt.gpus[0]), im_y.to(opt.gpus[0])])).chunk(2)
                 align_loss_val = align_loss(x, y, alpha=opt.align_alpha)
                 align_meter.update(align_loss_val, x.shape[0])
