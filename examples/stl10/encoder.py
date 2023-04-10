@@ -187,16 +187,14 @@ class AlexNet(SmallAlexNet):
                             conv_dim = get_output_size(conv_dim, 1, 3, 1)
                             conv_dim = get_output_size(conv_dim, 0, 3, 2)
                             out_channels=192
-                            if num_layers>6:
+                            if num_layers>7:
                                 # added conv block
                                 blocks.append(nn.Sequential(
-                                    nn.Conv2d(192, 192, kernel_size=3, padding=1, bias=False),
-                                    nn.BatchNorm2d(192),
+                                    nn.Conv2d(192, 96, kernel_size=3, padding=1, bias=False),
+                                    nn.BatchNorm2d(96),
                                     nn.ReLU(inplace=True),
-                                    nn.MaxPool2d(3, 2),
                                 ))
                                 conv_dim = get_output_size(conv_dim, 1, 3, 1)
-                                conv_dim = get_output_size(conv_dim, 0, 3, 2)
                                 out_channels=96
         blocks.append(nn.Sequential(
             nn.Flatten(),
