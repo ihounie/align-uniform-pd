@@ -158,7 +158,7 @@ def main():
     torch.cuda.set_device(opt.gpus[0])
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = True
-    model = SmallAlexNet(feat_dim=opt.feat_dim, in_size = 32 if opt.dataset=="CIFAR-10" else 64, num_layers=opt.num_layers).to(opt.gpus[0])
+    model = AlexNet(feat_dim=opt.feat_dim, in_size = 32 if opt.dataset=="CIFAR-10" else 64, num_layers=opt.num_layers).to(opt.gpus[0])
     encoder = nn.DataParallel(model, opt.gpus)
 
     optim = torch.optim.SGD(encoder.parameters(), lr=opt.lr,
