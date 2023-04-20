@@ -101,12 +101,17 @@ class SmallAlexNet(nn.Module):
                     nn.init.zeros_(m.bias)
         self.apply(init)
 
-    def forward(self, x, *, layer_index=-1):
+    def forward(self, x, *, layer_index=-1, intermediate_layer=None):
         if layer_index < 0:
             layer_index += len(self.blocks)
-        for layer in self.blocks[:(layer_index + 1)]:
+        for idx, layer in enumerate(self.blocks[:(layer_index + 1)]):
             x = layer(x)
-        return x
+            if idx==intermediate_layer:
+                intermediate_act = x
+        if intermediate_layer is not None:
+            return x, intermediate_act
+        else:
+            return x
 
 class AlexNet(SmallAlexNet):
     def __init__(self, num_layers = 5, in_channel=3, feat_dim=128, in_size=64):
